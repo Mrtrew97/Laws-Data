@@ -64,7 +64,7 @@
 
     <script>
         let sheetData = []; // Store sheet data
-        const allowedColumns = ["A", "B", "C", "L", "N", "P", "R", "T", "V", "W", "AG"]; // Allowed columns
+        const allowedColumns = ["AP", "AP Gain", "Rank", "Power Change", "Merits Gained", "Kill Change", "Heal Change", "Death Change", "Weekly Donations", "Weekly Build", "Behemoths"];
 
         // Fetch data from Google Sheets
         fetch("https://script.google.com/macros/s/AKfycbyVcVVn9z-QbjA_oy0Y3WSMBWh1OyEqBfOWd_GHiYag9VkOhux2lywnI3jZvHofvMyOQg/exec")
@@ -86,7 +86,7 @@
                 return;
             }
 
-            let matches = sheetData.filter(row => row["Name"].toLowerCase().includes(filter));
+            let matches = sheetData.filter(row => row["Name"]?.toLowerCase().includes(filter));
 
             matches.forEach(row => {
                 let div = document.createElement("div");
