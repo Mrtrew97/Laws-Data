@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sheet Data</title>
+</head>
+<body>
+    <h1>Google Sheets Data</h1>
+    <div id="data-container"></div>
+
+    <script>
+        fetch("YOUR_GOOGLE_APPS_SCRIPT_URL") // Replace with your API URL
+            .then(response => response.json())
+            .then(data => {
+                let output = "<ul>";
+                data.forEach(item => {
+                    output += `<li>${item.Name} - ${item.Age} - ${item.Email}</li>`; // Customize based on your columns
+                });
+                output += "</ul>";
+                document.getElementById("data-container").innerHTML = output;
+            })
+            .catch(error => console.error("Error fetching data:", error));
+    </script>
+</body>
+</html>
