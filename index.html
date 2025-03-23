@@ -64,6 +64,7 @@
 
     <script>
         let sheetData = []; // Store sheet data
+        const allowedColumns = ["A", "B", "C", "L", "N", "P", "R", "T", "V", "W", "AG"]; // Allowed columns
 
         // Fetch data from Google Sheets
         fetch("https://script.google.com/macros/s/AKfycbyVcVVn9z-QbjA_oy0Y3WSMBWh1OyEqBfOWd_GHiYag9VkOhux2lywnI3jZvHofvMyOQg/exec")
@@ -108,11 +109,13 @@
             }
         });
 
-        // Function to display selected name's details
+        // Function to display selected name's details (only allowed columns)
         function displayData(person) {
             let table = "<table>";
             Object.entries(person).forEach(([key, value]) => {
-                table += `<tr><th>${key}</th><td>${value}</td></tr>`;
+                if (allowedColumns.includes(key)) {
+                    table += `<tr><th>${key}</th><td>${value}</td></tr>`;
+                }
             });
             table += "</table>";
             document.getElementById("data-container").innerHTML = table;
