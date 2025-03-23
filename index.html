@@ -3,12 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Sheets Data</title>
+    <title>Google Sheets Search</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 20px;
+        }
+        input, select {
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+            margin-top: 10px;
         }
         #data-container {
             margin-top: 20px;
@@ -28,39 +34,74 @@
     </style>
 </head>
 <body>
-    <h1>Google Sheets Data</h1>
-    <div id="data-container">Loading data...</div>
+    <h1>Search Google Sheets Data</h1>
+    <input type="text" id="search" placeholder="Search for a name...">
+    <select id="nameDropdown"></select>
+    <div id="data-container">Select a name to see details.</div>
 
     <script>
-        fetch("https://script.google.com/macros/s/AKfycbyVcVVn9z-QbjA_oy0Y3WSMBWh1OyEqBfOWd_GHiYag9VkOhux2lywnI3jZvHofvMyOQg/exec") // Your Google Apps Script API URL
+        let sheetData = []; // Store sheet data for search
+
+        // Fetch data from Google Sheets
+        fetch("https://script.google.com/macros/s/AKfycbyVcVVn9z-QbjA_oy0Y3WSMBWh1OyEqBfOWd_GHiYag9VkOhux2lywnI3jZvHofvMyOQg/exec")
             .then(response => response.json())
             .then(data => {
-                if (data.length === 0) {
-                    document.getElementById("data-container").innerHTML = "<p>No data found.</p>";
-                    return;
-                }
+                sheetData = data;
+                let dropdown = document.getElementById("nameDropdown");
 
-                let table = "<table><tr>";
-                Object.keys(data[0]).forEach(header => {
-                    table += `<th>${header}</th>`;
-                });
-                table += "</tr>";
-
+                // Populate the dropdown with names from Column E
                 data.forEach(row => {
-                    table += "<tr>";
-                    Object.values(row).forEach(cell => {
-                        table += `<td>${cell}</td>`;
-                    });
-                    table += "</tr>";
+                    let option = document.createElement("option");
+                    option.value = row["Name"]; // Column E - Change this to match your actual header
+                    option.textContent = row["Name"];
+                    dropdown.appendChild(option);
                 });
-
-                table += "</table>";
-                document.getElementById("data-container").innerHTML = table;
             })
-            .catch(error => {
-                console.error("Error fetching data:", error);
-                document.getElementById("data-container").innerHTML = "<p>Error loading data.</p>";
+            .catch(error => console.error("Error fetching data:", error));
+
+        // Function to display selected name's details
+        function displayData(name) {
+            let person = sheetData.find(row => row["Name"] === name);
+            if (!person) {
+                document.getElementById("data-container").innerHTML = "<p>No data found.</p>";
+                return;
+            }
+
+            let table = "<table>";
+            Object.entries(person).forEach(([key, value]) => {
+                table += `<tr><th>${key}</th><td>${value}</td></tr>`;
             });
+            table += "</table>";
+
+            document.getElementById("data-container").innerHTML = table;
+        }
+
+        // Event listener for dropdown selection
+        document.getElementById("nameDropdown").addEventListener("change", function() {
+            displayData(this.value);
+        });
+
+        // Live search bar filtering dropdown options
+        document.getElementById("search").addEventListener("input", function() {
+            let filter = this.value.toLowerCase();
+            let dropdown = document.getElementById("nameDropdown");
+            dropdown.innerHTML = ""; // Clear dropdown
+
+            sheetData.forEach(row => {
+                if (row["Name"].toLowerCase().includes(filter)) {
+                    let option = document.createElement("option");
+                    option.value = row["Name"];
+                    option.textContent = row["Name"];
+                    dropdown.appendChild(option);
+                }
+            });
+
+            // Auto-select first matching result if exists
+            if (dropdown.options.length > 0) {
+                dropdown.selectedIndex = 0;
+                displayData(dropdown.options[0].value);
+            }
+        });
     </script>
 </body>
 </html>
