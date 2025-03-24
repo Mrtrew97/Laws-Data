@@ -1,3 +1,4 @@
+<script>
 let sheetData = [];
 
 fetch("https://script.google.com/macros/s/AKfycbwzPjyMo_snmZjNmpQ1G0HQZJzuipImBPem5o9PZbudlzaihM9RyaZIKApsZY5n30OG/exec")
@@ -10,11 +11,11 @@ fetch("https://script.google.com/macros/s/AKfycbwzPjyMo_snmZjNmpQ1G0HQZJzuipImBP
 
 function populateDropdown(data) {
     const searchInput = document.getElementById("search");
-    
+
     searchInput.addEventListener("input", function () {
         const inputValue = searchInput.value.toLowerCase();
         const matchingNames = data
-            .map(person => person["Name"]) // Assuming "Name" is the correct column header
+            .map(person => person["Name"])
             .filter(name => name.toLowerCase().includes(inputValue));
 
         showDropdown(matchingNames);
@@ -29,7 +30,6 @@ function populateDropdown(data) {
 }
 
 function showDropdown(names) {
-    // Create a dropdown dynamically if needed
     let dropdown = document.getElementById("dropdown");
     if (!dropdown) {
         dropdown = document.createElement("div");
@@ -41,9 +41,8 @@ function showDropdown(names) {
         dropdown.style.zIndex = "1000";
         document.querySelector(".search-container").appendChild(dropdown);
     }
-
     dropdown.innerHTML = "";
-    
+
     names.forEach(name => {
         const item = document.createElement("div");
         item.textContent = name;
@@ -73,8 +72,8 @@ function displayData(person) {
     document.getElementById("weekly-donations").textContent = person["Weekly Donations"] || "N/A";
     document.getElementById("weekly-build").textContent = person["Weekly Build"] || "N/A";
 
-    // Merit percentage calculation
     const totalMerits = sheetData.reduce((sum, row) => sum + parseFloat(row["Merits Gained"] || 0), 0);
     const playerMerits = parseFloat(person["Merits Gained"] || 0);
     document.getElementById("merit-percentage").textContent = totalMerits ? ((playerMerits / totalMerits) * 100).toFixed(2) + "%" : "0%";
 }
+</script>
