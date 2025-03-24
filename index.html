@@ -88,10 +88,10 @@
         #data-container {
             margin-top: 20px;
             display: grid;
-            grid-template-columns: repeat(4, 200px); /* Create 4 columns */
+            grid-template-columns: repeat(4, 200px); /* 4 columns */
             gap: 15px;
             justify-content: center;
-            max-width: 1000px; /* Increase container width to fit new boxes */
+            max-width: 1000px;
         }
 
         .data-box {
@@ -104,7 +104,7 @@
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
             min-width: 200px;
-            max-width: 250px;
+            max-width: 200px;
         }
 
         .data-box h3 {
@@ -120,7 +120,7 @@
             color: #007bff;
         }
 
-        /* New CSS for the large boxes */
+        /* CSS for the large boxes */
         .large-box {
             padding: 15px;
             background-color: #b4b4b4;
@@ -131,12 +131,7 @@
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
             width: 200px;
-            height: 500px; /* 2.5 times the size of regular boxes */
-        }
-
-        #chart {
-            width: 100%;
-            height: 300px;
+            height: 300px; /* Size of large boxes */
         }
     </style>
 </head>
@@ -149,30 +144,73 @@
     </div>
     
     <div id="data-container">
-        <!-- New boxes -->
-        <div class="large-box" id="left-box-1">
+        <!-- First Column: 2 boxes -->
+        <div class="large-box" id="merit-percentage-box">
             <h3>Merit Percentage</h3>
-            <div id="chart"></div> <!-- Chart goes here -->
+            <p id="merit-percentage">Loading...</p>
         </div>
-        <div class="data-box" id="existing-box-1"></div>
-        <div class="data-box" id="existing-box-2"></div>
-        <div class="large-box" id="right-box-1">
-            <h3>Additional Info</h3>
-            <!-- Add any other content here -->
+        <div class="large-box" id="merits-gained-box">
+            <h3>Merits Gained Percentage</h3>
+            <p id="merits-gained">Loading...</p>
         </div>
-        <div class="data-box" id="existing-box-3"></div>
-        <div class="data-box" id="existing-box-4"></div>
-        <div class="large-box" id="right-box-2">
-            <h3>Other Stats</h3>
-            <!-- Add any other content here -->
+
+        <!-- Second Column: 5 boxes -->
+        <div class="data-box" id="ap-box">
+            <h3>AP</h3>
+            <p id="ap">Loading...</p>
+        </div>
+        <div class="data-box" id="rank-box">
+            <h3>Rank</h3>
+            <p id="rank">Loading...</p>
+        </div>
+        <div class="data-box" id="merits-gained-detail-box">
+            <h3>Merits Gained</h3>
+            <p id="merits-gained-detail">Loading...</p>
+        </div>
+        <div class="data-box" id="heal-change-box">
+            <h3>Heal Change</h3>
+            <p id="heal-change">Loading...</p>
+        </div>
+        <div class="data-box" id="weekly-donations-box">
+            <h3>Weekly Donations</h3>
+            <p id="weekly-donations">Loading...</p>
+        </div>
+
+        <!-- Third Column: 5 boxes -->
+        <div class="data-box" id="ap-gain-box">
+            <h3>AP Gain</h3>
+            <p id="ap-gain">Loading...</p>
+        </div>
+        <div class="data-box" id="power-change-box">
+            <h3>Power Change</h3>
+            <p id="power-change">Loading...</p>
+        </div>
+        <div class="data-box" id="kill-change-box">
+            <h3>Kill Change</h3>
+            <p id="kill-change">Loading...</p>
+        </div>
+        <div class="data-box" id="death-change-box">
+            <h3>Death Change</h3>
+            <p id="death-change">Loading...</p>
+        </div>
+        <div class="data-box" id="weekly-build-box">
+            <h3>Weekly Build</h3>
+            <p id="weekly-build">Loading...</p>
+        </div>
+
+        <!-- Fourth Column: 2 boxes -->
+        <div class="large-box" id="average-ap-box">
+            <h3>Average AP</h3>
+            <p id="average-ap">Loading...</p>
+        </div>
+        <div class="large-box" id="average-ap-gain-box">
+            <h3>Average AP Gain</h3>
+            <p id="average-ap-gain">Loading...</p>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js library -->
-
     <script>
         let sheetData = [];
-        const allowedColumns = ["AP", "AP Gain", "Rank", "Power Change", "Merits Gained", "Kill Change", "Heal Change", "Death Change", "Weekly Donations", "Weekly Build"];
 
         fetch("https://script.google.com/macros/s/AKfycbyVcVVn9z-QbjA_oy0Y3WSMBWh1OyEqBfOWd_GHiYag9VkOhux2lywnI3jZvHofvMyOQg/exec")
             .then(response => response.json())
@@ -208,56 +246,36 @@
             dropdown.style.display = matches.length > 0 ? "block" : "none";
         });
 
-        document.addEventListener("click", function(e) {
-            if (!e.target.closest(".search-container")) {
-                dropdown.style.display = "none";
-            }
-        });
-
         function displayData(person) {
-            let container = document.getElementById("data-container");
-            container.innerHTML = "";
+            // First Column: Merit percentage and Merits Gained
+            const totalMerits = sheetData.reduce((sum, row) => sum + parseFloat(row["Merits Gained"] || 0), 0);
+            const playerMerits = parseFloat(person["Merits Gained"] || 0);
+            const meritPercentage = (playerMerits / totalMerits) * 100;
+            document.getElementById("merit-percentage").textContent = `${meritPercentage.toFixed(2)}%`;
 
-            Object.entries(person).forEach(([key, value]) => {
-                if (allowedColumns.includes(key)) {
-                    let box = document.createElement("div");
-                    box.className = "data-box";
-                    box.innerHTML = `<h3>${key}</h3><p>${value}</p>`;
-                    container.appendChild(box);
-                }
-            });
+            // Merits Gained Percentage
+            const meritsGainedPercentage = (playerMerits / totalMerits) * 100;
+            document.getElementById("merits-gained").textContent = `${meritsGainedPercentage.toFixed(2)}%`;
 
-            updateMeritChart(person);
-        }
+            // Second Column: AP, Rank, Merits Gained, Heal Change, Weekly Donations
+            document.getElementById("ap").textContent = person["AP"];
+            document.getElementById("rank").textContent = person["Rank"];
+            document.getElementById("merits-gained-detail").textContent = person["Merits Gained"];
+            document.getElementById("heal-change").textContent = person["Heal Change"];
+            document.getElementById("weekly-donations").textContent = person["Weekly Donations"];
 
-        // Function to update the merit chart in the large box
-        function updateMeritChart(person) {
-            let totalMerits = sheetData.reduce((sum, row) => sum + parseFloat(row["Merits Gained"] || 0), 0);
-            let playerMerits = parseFloat(person["Merits Gained"] || 0);
-            let percentage = (playerMerits / totalMerits) * 100;
+            // Third Column: AP Gain, Power Change, Kill Change, Death Change, Weekly Build
+            document.getElementById("ap-gain").textContent = person["AP Gain"];
+            document.getElementById("power-change").textContent = person["Power Change"];
+            document.getElementById("kill-change").textContent = person["Kill Change"];
+            document.getElementById("death-change").textContent = person["Death Change"];
+            document.getElementById("weekly-build").textContent = person["Weekly Build"];
 
-            const ctx = document.getElementById('chart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Merit Percentage'],
-                    datasets: [{
-                        label: `${person["Name"]}'s Merit %`,
-                        data: [percentage],
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100
-                        }
-                    }
-                }
-            });
+            // Fourth Column: Average AP and Average AP Gain
+            const averageAP = sheetData.reduce((sum, row) => sum + parseFloat(row["AP"] || 0), 0) / sheetData.length;
+            const averageAPGain = sheetData.reduce((sum, row) => sum + parseFloat(row["AP Gain"] || 0), 0) / sheetData.length;
+            document.getElementById("average-ap").textContent = averageAP.toFixed(2);
+            document.getElementById("average-ap-gain").textContent = averageAPGain.toFixed(2);
         }
     </script>
 </body>
