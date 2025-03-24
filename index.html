@@ -88,7 +88,7 @@
         #data-container {
             margin-top: 20px;
             display: grid;
-            grid-template-columns: repeat(4, 200px); /* 4 columns */
+            grid-template-columns: 200px 200px 200px 200px; /* 4 columns */
             gap: 15px;
             justify-content: center;
             max-width: 1000px;
@@ -120,7 +120,7 @@
             color: #007bff;
         }
 
-        /* CSS for the large boxes */
+        /* For Merit Percentage, Merits Gained Percentage, Average AP, Average AP Gain */
         .large-box {
             padding: 15px;
             background-color: #b4b4b4;
@@ -131,18 +131,23 @@
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
             width: 200px;
-            height: 300px; /* Size of large boxes */
+            height: 500px; /* 2.5 times the height of the normal boxes */
+        }
+
+        /* Boxes with the same height as Merits Gained */
+        .equal-height-box {
+            height: 200px; /* Same height as Merits Gained */
         }
     </style>
 </head>
 <body>
     <div class="header-banner"></div>
-    
+
     <div class="search-container">
         <input type="text" id="search" placeholder="Search for a name..." autocomplete="off">
         <div class="dropdown" id="dropdown"></div>
     </div>
-    
+
     <div id="data-container">
         <!-- First Column: 2 boxes -->
         <div class="large-box" id="merit-percentage-box">
@@ -155,45 +160,45 @@
         </div>
 
         <!-- Second Column: 5 boxes -->
-        <div class="data-box" id="ap-box">
+        <div class="data-box equal-height-box" id="ap-box">
             <h3>AP</h3>
             <p id="ap">Loading...</p>
         </div>
-        <div class="data-box" id="rank-box">
+        <div class="data-box equal-height-box" id="rank-box">
             <h3>Rank</h3>
             <p id="rank">Loading...</p>
         </div>
-        <div class="data-box" id="merits-gained-detail-box">
+        <div class="data-box equal-height-box" id="merits-gained-detail-box">
             <h3>Merits Gained</h3>
             <p id="merits-gained-detail">Loading...</p>
         </div>
-        <div class="data-box" id="heal-change-box">
+        <div class="data-box equal-height-box" id="heal-change-box">
             <h3>Heal Change</h3>
             <p id="heal-change">Loading...</p>
         </div>
-        <div class="data-box" id="weekly-donations-box">
+        <div class="data-box equal-height-box" id="weekly-donations-box">
             <h3>Weekly Donations</h3>
             <p id="weekly-donations">Loading...</p>
         </div>
 
         <!-- Third Column: 5 boxes -->
-        <div class="data-box" id="ap-gain-box">
+        <div class="data-box equal-height-box" id="ap-gain-box">
             <h3>AP Gain</h3>
             <p id="ap-gain">Loading...</p>
         </div>
-        <div class="data-box" id="power-change-box">
+        <div class="data-box equal-height-box" id="power-change-box">
             <h3>Power Change</h3>
             <p id="power-change">Loading...</p>
         </div>
-        <div class="data-box" id="kill-change-box">
+        <div class="data-box equal-height-box" id="kill-change-box">
             <h3>Kill Change</h3>
             <p id="kill-change">Loading...</p>
         </div>
-        <div class="data-box" id="death-change-box">
+        <div class="data-box equal-height-box" id="death-change-box">
             <h3>Death Change</h3>
             <p id="death-change">Loading...</p>
         </div>
-        <div class="data-box" id="weekly-build-box">
+        <div class="data-box equal-height-box" id="weekly-build-box">
             <h3>Weekly Build</h3>
             <p id="weekly-build">Loading...</p>
         </div>
@@ -211,6 +216,7 @@
 
     <script>
         let sheetData = [];
+        const allowedColumns = ["AP", "AP Gain", "Rank", "Power Change", "Merits Gained", "Kill Change", "Heal Change", "Death Change", "Weekly Donations", "Weekly Build"];
 
         fetch("https://script.google.com/macros/s/AKfycbyVcVVn9z-QbjA_oy0Y3WSMBWh1OyEqBfOWd_GHiYag9VkOhux2lywnI3jZvHofvMyOQg/exec")
             .then(response => response.json())
@@ -253,7 +259,6 @@
             const meritPercentage = (playerMerits / totalMerits) * 100;
             document.getElementById("merit-percentage").textContent = `${meritPercentage.toFixed(2)}%`;
 
-            // Merits Gained Percentage
             const meritsGainedPercentage = (playerMerits / totalMerits) * 100;
             document.getElementById("merits-gained").textContent = `${meritsGainedPercentage.toFixed(2)}%`;
 
