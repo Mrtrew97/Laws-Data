@@ -51,8 +51,8 @@
         #data-container {
             margin-top: 20px;
             display: grid;
-            grid-template-columns: 200px 200px 200px 200px 200px; /* 5 columns */
-            grid-template-rows: repeat(5, auto);
+            grid-template-columns: 200px 200px 200px 200px; /* 4 columns */
+            grid-template-rows: repeat(4, auto);
             gap: 15px;
             justify-content: center;
             align-items: start;
@@ -68,7 +68,7 @@
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
             width: 200px;
-            height: 200px;
+            height: 200px; /* Standard box height */
         }
 
         .large-box {
@@ -87,11 +87,6 @@
             font-weight: bold;
             color: #007bff;
         }
-
-        .empty {
-            width: 200px;
-            height: 200px;
-        }
     </style>
 </head>
 <body>
@@ -102,53 +97,41 @@
     </div>
 
     <div id="data-container">
-        <!-- Column 1: Average AP -->
+        <!-- Row 1 -->
         <div class="data-box large-box" id="average-ap-box">
             <h3>Average AP</h3>
             <p id="average-ap">Loading...</p>
         </div>
-        <div class="empty"></div>
-
-        <!-- Column 2: Main Stats -->
         <div class="data-box" id="ap-box"><h3>AP</h3><p id="ap">Loading...</p></div>
         <div class="data-box" id="ap-gain-box"><h3>AP Gain</h3><p id="ap-gain">Loading...</p></div>
-
-        <!-- Column 3: Secondary Stats -->
-        <div class="data-box" id="rank-box"><h3>Rank</h3><p id="rank">Loading...</p></div>
-        <div class="data-box" id="power-change-box"><h3>Power Change</h3><p id="power-change">Loading...</p></div>
-
-        <!-- Column 4: Spacer -->
-        <div class="empty"></div>
-
-        <!-- Column 5: Merit Percentage -->
         <div class="data-box large-box" id="merit-percentage-box">
             <h3>Merit Percentage</h3>
             <p id="merit-percentage">Loading...</p>
         </div>
 
-        <!-- Column 1: Average AP Gain -->
+        <!-- Row 2 -->
         <div class="data-box large-box" id="average-ap-gain-box">
             <h3>Average AP Gain</h3>
             <p id="average-ap-gain">Loading...</p>
         </div>
-        <div class="empty"></div>
-
-        <!-- Column 2: More Stats -->
-        <div class="data-box" id="merits-gained-detail-box"><h3>Merits Gained</h3><p id="merits-gained-detail">Loading...</p></div>
-        <div class="data-box" id="kill-change-box"><h3>Kill Change</h3><p id="kill-change">Loading...</p></div>
-
-        <!-- Column 3: More Stats -->
-        <div class="data-box" id="heal-change-box"><h3>Heal Change</h3><p id="heal-change">Loading...</p></div>
-        <div class="data-box" id="death-change-box"><h3>Death Change</h3><p id="death-change">Loading...</p></div>
-
-        <!-- Column 4: Spacer -->
-        <div class="empty"></div>
-
-        <!-- Column 5: Merits Gained Percentage -->
+        <div class="data-box" id="rank-box"><h3>Rank</h3><p id="rank">Loading...</p></div>
+        <div class="data-box" id="power-change-box"><h3>Power Change</h3><p id="power-change">Loading...</p></div>
         <div class="data-box large-box" id="merits-gained-box">
             <h3>Merits Gained Percentage</h3>
             <p id="merits-gained">Loading...</p>
         </div>
+
+        <!-- Row 3 -->
+        <div class="data-box large-box"></div>
+        <div class="data-box" id="merits-gained-detail-box"><h3>Merits Gained</h3><p id="merits-gained-detail">Loading...</p></div>
+        <div class="data-box" id="kill-change-box"><h3>Kill Change</h3><p id="kill-change">Loading...</p></div>
+        <div class="data-box large-box"></div>
+
+        <!-- Row 4 -->
+        <div class="data-box large-box"></div>
+        <div class="data-box" id="heal-change-box"><h3>Heal Change</h3><p id="heal-change">Loading...</p></div>
+        <div class="data-box" id="death-change-box"><h3>Death Change</h3><p id="death-change">Loading...</p></div>
+        <div class="data-box large-box"></div>
     </div>
 
     <script>
