@@ -22,7 +22,7 @@
 
         .header-banner {
             width: 100%;
-            height: 200px;
+            height: 250px;
             background-image: url("https://i.imgur.com/7pZN3Sw.jpeg");
             background-size: cover;
             background-position: center;
@@ -140,7 +140,7 @@
     <script>
         let sheetData = [];
 
-        fetch("https://script.google.com/macros/s/AKfycby0EKCxP-m9idytRNIMQ3Y_lr-GObxLqO8zOpm9wSaZPp8gpciBAoYD3jK6pQQjeuUOSw/exec")
+        fetch("https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLiODwSfLhHLi1B4h1QcZKwwCBKScUVSaZM-tvZMwL-qkToO2FkIwvfubANlVoLTGJlgbTBLaj5yZ-vDnj8y55XQfPmhXk_L8RAbu4xlrYEgK4_C_dGvzlm6axU9fTX6NWwJQ49kHYQorIyObJ03pIS-d6QPh3FNdknjDwegVbqRmrglejSUBqRtBMot3B2Qiule3n4ReP6ZxK925YA-tP4bD4VqjTthjd_nJKhtURZWUXcYszE20D01kewjAngYvGd4KOif5yamrJP87yNNki1Skcvj9sKzfXdc-_zc&lib=MBZf0eilKXmKARpVhIJdf0pFQAQOwlaTN")
             .then(response => response.json())
             .then(data => {
                 sheetData = data;
@@ -148,19 +148,16 @@
             .catch(error => console.error("Error fetching data:", error));
 
         function displayData(person) {
-            const formatNumber = (value) => 
-                value !== undefined && value !== "" ? parseFloat(value).toFixed(2) : "0.00";
-
-            document.getElementById("ap").textContent = formatNumber(person["AP"]);
-            document.getElementById("ap-gain").textContent = formatNumber(person["AP Gain"]);
+            document.getElementById("ap").textContent = person["AP"] || "0";
+            document.getElementById("ap-gain").textContent = person["AP Gain"] || "0";
             document.getElementById("rank").textContent = person["Rank"];
-            document.getElementById("power-change").textContent = formatNumber(person["Power Change"]);
-            document.getElementById("kill-change").textContent = formatNumber(person["Kill Change"]);
-            document.getElementById("death-change").textContent = formatNumber(person["Death Change"]);
-            document.getElementById("weekly-build").textContent = formatNumber(person["Weekly Build"]);
-            document.getElementById("merits-gained-detail").textContent = formatNumber(person["Merits Gained"]);
-            document.getElementById("heal-change").textContent = formatNumber(person["Heal Change"]);
-            document.getElementById("weekly-donations").textContent = formatNumber(person["Weekly Donations"]);
+            document.getElementById("power-change").textContent = person["Power Change"] || "0";
+            document.getElementById("kill-change").textContent = person["Kill Change"] || "0";
+            document.getElementById("death-change").textContent = person["Death Change"] || "0";
+            document.getElementById("weekly-build").textContent = person["Weekly Build"] || "0";
+            document.getElementById("merits-gained-detail").textContent = person["Merits Gained"] || "0";
+            document.getElementById("heal-change").textContent = person["Heal Change"] || "0";
+            document.getElementById("weekly-donations").textContent = person["Weekly Donations"] || "0";
         }
     </script>
 </body>
