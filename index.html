@@ -141,10 +141,13 @@
     <script>
         let sheetData = [];
 
+        // Fetch data from Google Apps Script
         fetch("https://script.google.com/macros/s/AKfycbxXSyJJ19BpksulDCgg0HlGOKkzoJsdWWMmovQMjMXLImSIM-IQ7DOXMPbbJmn3VI9d6Q/exec")
             .then(response => response.json())
             .then(data => {
                 sheetData = data;
+
+                // Populate the dropdown with names
                 const nameDropdown = document.getElementById("name-dropdown");
                 sheetData.forEach(person => {
                     const option = document.createElement("option");
@@ -154,6 +157,7 @@
             })
             .catch(error => console.error("Error fetching data:", error));
 
+        // Function to display data for a person
         function displayData(person) {
             const totalMerits = sheetData.reduce((sum, row) => sum + parseFloat(row["Merits Gained"] || 0), 0);
             
@@ -169,10 +173,11 @@
             document.getElementById("merits-gained").textContent = totalMerits ? ((person["Merits Gained"] / totalMerits) * 100).toFixed(2) + "%" : "0%";
             document.getElementById("heal-change").textContent = person["Heal Change"] || "0";
             document.getElementById("death-change").textContent = person["Death Change"] || "0";
-            document.getElementById("weekly-donations").textContent = person["Weekly Donations"] !== 0 ? person["Weekly Donations"] || "0" : "0";
-            document.getElementById("weekly-build").textContent = person["Weekly Build"] !== 0 ? person["Weekly Build"] || "0" : "0";
+            document.getElementById("weekly-donations").textContent = person["Weekly Donations"] || "0";
+            document.getElementById("weekly-build").textContent = person["Weekly Build"] || "0";
         }
 
+        // Add event listener to search input
         document.getElementById("search").addEventListener("input", function(event) {
             const name = event.target.value;
             const person = sheetData.find(item => item.Name.toLowerCase() === name.toLowerCase());
