@@ -51,10 +51,10 @@
         #data-container {
             margin-top: 20px;
             display: grid;
-            grid-template-columns: repeat(3, 200px); /* 3 columns with 200px width */
+            grid-template-columns: 150px 150px 150px; /* 3 columns */
             grid-template-rows: auto;
             row-gap: 50px; /* 50px space between rows */
-            column-gap: 200px; /* 200px space between columns */
+            column-gap: 150px; /* 150px space between columns */
             justify-content: center;
             align-items: start;
         }
@@ -68,8 +68,8 @@
             border-radius: 5px;
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
-            width: 150px;  /* Set width to 150px */
-            height: 75px;  /* Set height to 75px */
+            width: 150px; /* Adjusted box width */
+            height: 75px; /* Adjusted box height */
         }
 
         .data-box h3 {
@@ -104,8 +104,7 @@
         <div class="data-box" id="heal-change-box"><h3>Heal Change</h3><p id="heal-change">Loading...</p></div>
         <div class="data-box" id="weekly-donations-box"><h3>Weekly Donations</h3><p id="weekly-donations">Loading...</p></div>
         <div class="data-box" id="weekly-build-box"><h3>Weekly Build</h3><p id="weekly-build">Loading...</p></div>
-        
-        <!-- Added 5 new data boxes -->
+        <!-- New boxes added -->
         <div class="data-box" id="merits-percentage-box"><h3>Merits Percentage</h3><p id="merits-percentage">Loading...</p></div>
         <div class="data-box" id="ap-average-box"><h3>AP Average</h3><p id="ap-average">Loading...</p></div>
         <div class="data-box" id="ap-gain-average-box"><h3>AP Gain Average</h3><p id="ap-gain-average">Loading...</p></div>
@@ -128,14 +127,15 @@
             return value === 0 || value ? value : "0";
         }
 
+        // Helper function to format values to two decimal places
         function formatValueToTwoDecimals(value) {
-            return value && !isNaN(value) ? parseFloat(value).toFixed(2) : value;
+            return value !== undefined && value !== null ? parseFloat(value).toFixed(2) : "0.00";
         }
 
         function displayData(person) {
             document.getElementById("ap").textContent = formatValueToTwoDecimals(person["AP"]);
             document.getElementById("rank").textContent = getValueOrZero(person["Rank"]);
-            document.getElementById("ap-gain").textContent = getValueOrZero(person["AP Gain"]);
+            document.getElementById("ap-gain").textContent = formatValueToTwoDecimals(person["AP Gain"]);
             document.getElementById("power-change").textContent = getValueOrZero(person["Power Change"]);
             document.getElementById("merits-gained").textContent = getValueOrZero(person["Merits Gained"]);
             document.getElementById("kill-change").textContent = getValueOrZero(person["Kill Change"]);
@@ -144,8 +144,8 @@
             document.getElementById("weekly-donations").textContent = getValueOrZero(person["Weekly Donations"]);
             document.getElementById("weekly-build").textContent = getValueOrZero(person["Weekly Build"]);
 
-            // Added 5 new data points
-            document.getElementById("merits-percentage").textContent = getValueOrZero(person["Merits Percentage"]);
+            // Displaying the new values
+            document.getElementById("merits-percentage").textContent = formatValueToTwoDecimals(person["Merits Percentage"]);
             document.getElementById("ap-average").textContent = formatValueToTwoDecimals(person["AP Average"]);
             document.getElementById("ap-gain-average").textContent = formatValueToTwoDecimals(person["AP Gain Average"]);
             document.getElementById("merits-gained-percentage").textContent = getValueOrZero(person["Merits Gained Percentage"]);
@@ -175,8 +175,7 @@
             document.getElementById("heal-change").textContent = defaultValue;
             document.getElementById("weekly-donations").textContent = defaultValue;
             document.getElementById("weekly-build").textContent = defaultValue;
-
-            // Reset new data boxes
+            // Reset new fields to "Loading..."
             document.getElementById("merits-percentage").textContent = defaultValue;
             document.getElementById("ap-average").textContent = defaultValue;
             document.getElementById("ap-gain-average").textContent = defaultValue;
