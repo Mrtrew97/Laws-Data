@@ -91,6 +91,9 @@
 
     <div class="search-container">
         <input type="text" id="search" placeholder="Search for a name..." autocomplete="off">
+        <datalist id="name-dropdown">
+            <!-- Dropdown options will be dynamically populated -->
+        </datalist>
     </div>
 
     <div id="data-container">
@@ -140,13 +143,44 @@
     <script>
         let sheetData = [];
 
-        fetch("https://script.google.com/macros/s/AKfycbyVcVVn9z-QbjA_oy0Y3WSMBWh1OyEqBfOWd_GHiYag9VkOhux2lywnI3jZvHofvMyOQg/exec")
+        // Fetch data from Google Sheets
+        fetch("https://script.google.com/macros/s/AKfycbxXSyJJ19BpksulDCgg0HlGOKkzoJsdWWMmovQMjMXLImSIM-IQ7DOXMPbbJmn3VI9d6Q/exec")
             .then(response => response.json())
             .then(data => {
                 sheetData = data;
+
+                // Populate the datalist with names from column E
+                const dropdown = document.getElementById("name-dropdown");
+
+                // Add names from column E (assuming "Name" is the header for column E)
+                sheetData.forEach(item => {
+                    const name = item["Name"]; // Adjust if the header for column E is different
+                    const option = document.createElement("option");
+                    option.value = name;
+                    dropdown.appendChild(option);
+                });
+
+                // Add search functionality
+                document.getElementById("search").addEventListener("input", function () {
+                    const searchTerm = this.value.toLowerCase();
+                    const filteredNames = sheetData
+                        .filter(item => item["Name"].toLowerCase().includes(searchTerm))
+                        .map(item => item["Name"]);
+
+                    // Clear previous options in the datalist
+                    dropdown.innerHTML = "";
+
+                    // Add filtered names to the datalist
+                    filteredNames.forEach(name => {
+                        const option = document.createElement("option");
+                        option.value = name;
+                        dropdown.appendChild(option);
+                    });
+                });
             })
             .catch(error => console.error("Error fetching data:", error));
 
+        // Function to display data for the selected person
         function displayData(person) {
             const totalMerits = sheetData.reduce((sum, row) => sum + parseFloat(row["Merits Gained"] || 0), 0);
             const playerMerits = parseFloat(person["Merits Gained"] || 0);
