@@ -12,12 +12,10 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            height: 100vh;
+            min-height: 100vh;
             text-align: center;
             background: url("https://i.imgur.com/bOOzwSt.jpeg") no-repeat center center fixed;
             background-size: cover;
-            background-attachment: fixed;
-            position: relative;
         }
 
         .header-banner {
@@ -29,7 +27,6 @@
         }
 
         .search-container {
-            position: relative;
             display: flex;
             justify-content: center;
             width: 100%;
@@ -51,14 +48,11 @@
         #data-container {
             margin-top: 20px;
             display: grid;
-            grid-template-columns: 150px 150px 150px; /* 3 columns */
-            grid-template-rows: auto;
-            row-gap: 50px; /* 50px space between rows */
-            column-gap: 75px; /* Reduced space between columns */
+            grid-template-columns: repeat(3, 150px); /* 3 columns */
+            gap: 50px 75px; /* Row gap 50px, Column gap 75px */
             justify-content: center;
             align-items: start;
-            width: 500px; /* Set a fixed width to control grid width */
-            margin-left: -50px; /* Slightly shift columns to the left */
+            width: auto;
         }
 
         .data-box {
@@ -70,8 +64,8 @@
             border-radius: 5px;
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
-            width: 150px; /* Adjusted box width */
-            height: 50px; /* Reduced box height */
+            width: 150px;
+            height: 50px;
         }
 
         .data-box h3 {
@@ -87,27 +81,21 @@
             color: #007bff;
         }
 
-        /* ?? Mobile Fixes: Make layout responsive */
-        @media screen and (max-width: 768px) { 
-            #search {
-                width: 90%;
-                max-width: 400px;
-            }
-
+        /* ? FIX: Ensure all boxes stay visible on mobile */
+        @media screen and (max-width: 768px) {
             #data-container {
                 display: flex;
-                flex-direction: column; /* Stack boxes on mobile */
-                align-items: center;
-                gap: 20px; /* Keep spacing between boxes */
-                padding: 20px; /* Add padding for spacing */
+                flex-wrap: wrap; /* Keeps all boxes visible */
+                justify-content: center;
+                gap: 20px;
+                padding: 20px;
             }
 
             .data-box {
                 width: 90%;
                 max-width: 300px;
-                height: auto; /* Adjust height dynamically */
+                height: auto;
                 padding: 15px;
-                margin-bottom: 15px; /* Ensure spacing between boxes */
             }
         }
     </style>
