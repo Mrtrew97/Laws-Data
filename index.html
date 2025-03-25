@@ -22,7 +22,7 @@
 
         .header-banner {
             width: 100%;
-            height: 250px;
+            height: 200px;
             background-image: url("https://i.imgur.com/7pZN3Sw.jpeg");
             background-size: cover;
             background-position: center;
@@ -68,8 +68,8 @@
             border-radius: 5px;
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
-            width: 150px;
-            height: 75px; /* Set to 100px */
+            width: 200px;
+            height: 200px; /* All boxes now match the Rank box */
         }
 
         .data-box h3 {
@@ -94,71 +94,72 @@
     </div>
 
     <div id="data-container">
-        <!-- Row 1 -->
-        <div class="data-box" id="average-ap-box">
-            <h3>Average AP</h3>
-            <p id="average-ap">Loading...</p>
-        </div>
         <div class="data-box" id="ap-box"><h3>AP</h3><p id="ap">Loading...</p></div>
-        <div class="data-box" id="ap-gain-box"><h3>AP Gain</h3><p id="ap-gain">Loading...</p></div>
-        <div class="data-box" id="merit-percentage-box">
-            <h3>Merit Percentage</h3>
-            <p id="merit-percentage">Loading...</p>
-        </div>
-
-        <!-- Row 2 -->
-        <div class="data-box"></div>
         <div class="data-box" id="rank-box"><h3>Rank</h3><p id="rank">Loading...</p></div>
+        <div class="data-box" id="ap-gain-box"><h3>AP Gain</h3><p id="ap-gain">Loading...</p></div>
         <div class="data-box" id="power-change-box"><h3>Power Change</h3><p id="power-change">Loading...</p></div>
-        <div class="data-box"></div>
-
-        <!-- Row 3 -->
-        <div class="data-box" id="average-ap-gain-box">
-            <h3>Average AP Gain</h3>
-            <p id="average-ap-gain">Loading...</p>
-        </div>
-        <div class="data-box" id="merits-gained-detail-box"><h3>Merits Gained</h3><p id="merits-gained-detail">Loading...</p></div>
+        <div class="data-box" id="merits-gained-box"><h3>Merits Gained</h3><p id="merits-gained">Loading...</p></div>
         <div class="data-box" id="kill-change-box"><h3>Kill Change</h3><p id="kill-change">Loading...</p></div>
-        <div class="data-box" id="merits-gained-box">
-            <h3>Merits Gained Percentage</h3>
-            <p id="merits-gained">Loading...</p>
-        </div>
-
-        <!-- Row 4 -->
-        <div class="data-box"></div>
-        <div class="data-box" id="heal-change-box"><h3>Heal Change</h3><p id="heal-change">Loading...</p></div>
         <div class="data-box" id="death-change-box"><h3>Death Change</h3><p id="death-change">Loading...</p></div>
-        <div class="data-box"></div>
-
-        <!-- Row 5 -->
-        <div class="data-box"></div>
+        <div class="data-box" id="heal-change-box"><h3>Heal Change</h3><p id="heal-change">Loading...</p></div>
         <div class="data-box" id="weekly-donations-box"><h3>Weekly Donations</h3><p id="weekly-donations">Loading...</p></div>
         <div class="data-box" id="weekly-build-box"><h3>Weekly Build</h3><p id="weekly-build">Loading...</p></div>
-        <div class="data-box"></div>
     </div>
 
     <script>
         let sheetData = [];
 
-        fetch("https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLiODwSfLhHLi1B4h1QcZKwwCBKScUVSaZM-tvZMwL-qkToO2FkIwvfubANlVoLTGJlgbTBLaj5yZ-vDnj8y55XQfPmhXk_L8RAbu4xlrYEgK4_C_dGvzlm6axU9fTX6NWwJQ49kHYQorIyObJ03pIS-d6QPh3FNdknjDwegVbqRmrglejSUBqRtBMot3B2Qiule3n4ReP6ZxK925YA-tP4bD4VqjTthjd_nJKhtURZWUXcYszE20D01kewjAngYvGd4KOif5yamrJP87yNNki1Skcvj9sKzfXdc-_zc&lib=MBZf0eilKXmKARpVhIJdf0pFQAQOwlaTN")
+        fetch("https://script.google.com/macros/s/AKfycby0EKCxP-m9idytRNIMQ3Y_lr-GObxLqO8zOpm9wSaZPp8gpciBAoYD3jK6pQQjeuUOSw/exec")
             .then(response => response.json())
             .then(data => {
                 sheetData = data;
             })
             .catch(error => console.error("Error fetching data:", error));
 
-        function displayData(person) {
-            document.getElementById("ap").textContent = person["AP"] || "0";
-            document.getElementById("ap-gain").textContent = person["AP Gain"] || "0";
-            document.getElementById("rank").textContent = person["Rank"];
-            document.getElementById("power-change").textContent = person["Power Change"] || "0";
-            document.getElementById("kill-change").textContent = person["Kill Change"] || "0";
-            document.getElementById("death-change").textContent = person["Death Change"] || "0";
-            document.getElementById("weekly-build").textContent = person["Weekly Build"] || "0";
-            document.getElementById("merits-gained-detail").textContent = person["Merits Gained"] || "0";
-            document.getElementById("heal-change").textContent = person["Heal Change"] || "0";
-            document.getElementById("weekly-donations").textContent = person["Weekly Donations"] || "0";
+        // Helper function to return 0 instead of "N/A"
+        function getValueOrZero(value) {
+            return value === 0 || value ? value : "0";
         }
+
+        function displayData(person) {
+            document.getElementById("ap").textContent = getValueOrZero(person["AP"]);
+            document.getElementById("rank").textContent = getValueOrZero(person["Rank"]);
+            document.getElementById("ap-gain").textContent = getValueOrZero(person["AP Gain"]);
+            document.getElementById("power-change").textContent = getValueOrZero(person["Power Change"]);
+            document.getElementById("merits-gained").textContent = getValueOrZero(person["Merits Gained"]);
+            document.getElementById("kill-change").textContent = getValueOrZero(person["Kill Change"]);
+            document.getElementById("death-change").textContent = getValueOrZero(person["Death Change"]);
+            document.getElementById("heal-change").textContent = getValueOrZero(person["Heal Change"]);
+            document.getElementById("weekly-donations").textContent = getValueOrZero(person["Weekly Donations"]);
+            document.getElementById("weekly-build").textContent = getValueOrZero(person["Weekly Build"]);
+        }
+
+        function searchPerson() {
+            const searchQuery = document.getElementById("search").value.toLowerCase();
+            const foundPerson = sheetData.find(person => person["Name"].toLowerCase().includes(searchQuery));
+
+            if (foundPerson) {
+                displayData(foundPerson);
+            } else {
+                resetDataDisplay();
+            }
+        }
+
+        function resetDataDisplay() {
+            const defaultValue = "Loading...";
+            document.getElementById("ap").textContent = defaultValue;
+            document.getElementById("rank").textContent = defaultValue;
+            document.getElementById("ap-gain").textContent = defaultValue;
+            document.getElementById("power-change").textContent = defaultValue;
+            document.getElementById("merits-gained").textContent = defaultValue;
+            document.getElementById("kill-change").textContent = defaultValue;
+            document.getElementById("death-change").textContent = defaultValue;
+            document.getElementById("heal-change").textContent = defaultValue;
+            document.getElementById("weekly-donations").textContent = defaultValue;
+            document.getElementById("weekly-build").textContent = defaultValue;
+        }
+
+        document.getElementById("search").addEventListener("input", searchPerson);
     </script>
 </body>
 </html>
