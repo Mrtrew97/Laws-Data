@@ -222,16 +222,37 @@
         function displayData(person) {
             console.log("Selected person data:", person); // Debugging: log the selected person to ensure correct data is passed
 
-            const totalMerits = sheetData.reduce((sum, row) => sum + parseFloat(row["Merits Gained"] || 0), 0);
-            const playerMerits = parseFloat(person["Merits Gained"] || 0);
-            document.getElementById("merit-percentage").textContent = totalMerits ? ((playerMerits / totalMerits) * 100).toFixed(2) + "%" : "0%";
+            // Handle all fields
+            document.getElementById("ap").textContent = person["AP"] || "N/A";
+            document.getElementById("rank").textContent = person["Rank"] || "N/A";
+            document.getElementById("merits-gained-detail").textContent = person["Merits Gained"] || "N/A";
+            document.getElementById("heal-change").textContent = person["Heal Change"] || "N/A";
+            document.getElementById("weekly-donations").textContent = person["Weekly Donations"] || "N/A";
+            document.getElementById("weekly-build").textContent = person["Weekly Build"] || "N/A";
 
-            document.getElementById("ap").textContent = person["AP"];
-            document.getElementById("rank").textContent = person["Rank"];
-            document.getElementById("merits-gained-detail").textContent = person["Merits Gained"];
-            document.getElementById("heal-change").textContent = person["Heal Change"];
-            document.getElementById("weekly-donations").textContent = person["Weekly Donations"];
-            // Add any other fields you'd like to display here.
+            // Calculate averages and percentages for other fields
+            const totalAp = sheetData.reduce((sum, row) => sum + parseFloat(row["AP"] || 0), 0);
+            const playerAp = parseFloat(person["AP"] || 0);
+            document.getElementById("average-ap").textContent = totalAp ? (playerAp / sheetData.length).toFixed(2) : "N/A";
+
+            const totalApGain = sheetData.reduce((sum, row) => sum + parseFloat(row["AP Gain"] || 0), 0);
+            const playerApGain = parseFloat(person["AP Gain"] || 0);
+            document.getElementById("average-ap-gain").textContent = totalApGain ? (playerApGain / sheetData.length).toFixed(2) : "N/A";
+
+            const totalPowerChange = sheetData.reduce((sum, row) => sum + parseFloat(row["Power Change"] || 0), 0);
+            const playerPowerChange = parseFloat(person["Power Change"] || 0);
+            document.getElementById("power-change").textContent = totalPowerChange ? (playerPowerChange / sheetData.length).toFixed(2) : "N/A";
+
+            const totalKillChange = sheetData.reduce((sum, row) => sum + parseFloat(row["Kill Change"] || 0), 0);
+            const playerKillChange = parseFloat(person["Kill Change"] || 0);
+            document.getElementById("kill-change").textContent = totalKillChange ? (playerKillChange / sheetData.length).toFixed(2) : "N/A";
+
+            const meritsPercentage = totalApGain ? ((parseFloat(person["Merits Gained"] || 0) / totalApGain) * 100).toFixed(2) + "%" : "0%";
+            document.getElementById("merits-gained").textContent = meritsPercentage;
+
+            const totalDeathChange = sheetData.reduce((sum, row) => sum + parseFloat(row["Death Change"] || 0), 0);
+            const playerDeathChange = parseFloat(person["Death Change"] || 0);
+            document.getElementById("death-change").textContent = totalDeathChange ? (playerDeathChange / sheetData.length).toFixed(2) : "N/A";
         }
     </script>
 </body>
