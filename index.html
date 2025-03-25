@@ -131,6 +131,17 @@
 
     <div id="data-container">
         <!-- Your data boxes here -->
+        <div class="data-box" id="average-ap-box">
+            <h3>Average AP</h3>
+            <p id="average-ap">Loading...</p>
+        </div>
+        <div class="data-box" id="ap-box"><h3>AP</h3><p id="ap">Loading...</p></div>
+        <div class="data-box" id="ap-gain-box"><h3>AP Gain</h3><p id="ap-gain">Loading...</p></div>
+        <div class="data-box" id="merit-percentage-box">
+            <h3>Merit Percentage</h3>
+            <p id="merit-percentage">Loading...</p>
+        </div>
+        <!-- More boxes can go here... -->
     </div>
 
     <script>
@@ -188,6 +199,7 @@
 
         // Function to display data for the selected person
         function displayData(person) {
+            console.log(person); // Debugging: log the selected person to ensure correct data is passed
             const totalMerits = sheetData.reduce((sum, row) => sum + parseFloat(row["Merits Gained"] || 0), 0);
             const playerMerits = parseFloat(person["Merits Gained"] || 0);
             document.getElementById("merit-percentage").textContent = totalMerits ? ((playerMerits / totalMerits) * 100).toFixed(2) + "%" : "0%";
@@ -197,6 +209,8 @@
             document.getElementById("merits-gained-detail").textContent = person["Merits Gained"];
             document.getElementById("heal-change").textContent = person["Heal Change"];
             document.getElementById("weekly-donations").textContent = person["Weekly Donations"];
+
+            // You can add more fields as necessary
         }
     </script>
 </body>
