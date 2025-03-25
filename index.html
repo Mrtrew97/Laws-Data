@@ -25,7 +25,7 @@
             height: 200px;
             background-image: url("https://i.imgur.com/7pZN3Sw.jpeg");
             background-size: cover;
-            background-position: center;
+            background-position: left 0% top 55%;
         }
 
         .search-container {
@@ -51,16 +51,18 @@
         #data-container {
             margin-top: 20px;
             display: grid;
-            grid-template-columns: 200px 200px 200px 200px; /* 4 columns */
+            grid-template-columns: 150px 150px 150px; /* 3 columns */
             grid-template-rows: auto;
-            row-gap: 50px; /* Ensures 50px vertical space between all rows */
-            column-gap: 200px; /* Keeps small horizontal spacing */
+            row-gap: 50px; /* 50px space between rows */
+            column-gap: 75px; /* 75px space between columns */
             justify-content: center;
             align-items: start;
+            width: 500px; /* Set a fixed width to control grid width */
+            margin-left: -25px; /* Slightly shift columns to the left */
         }
 
         .data-box {
-            padding: 15px;
+            padding: 10px;
             background-color: #b4b4b4;
             border: 4px double #000;
             outline: 3px solid #000;
@@ -68,30 +70,21 @@
             border-radius: 5px;
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
-            width: 200px;
-            height: 200px; /* Half height for small boxes */
+            width: 150px; /* Adjusted box width */
+            height: 50px; /* Reduced box height to 50px */
         }
 
-        .large-box {
-            height: 200px; /* 2.5 times the height of a regular box */
-        }
-
-        .data-box h3, .large-box h3 {
+        .data-box h3 {
             margin: 0;
-            font-size: 16px;
+            font-size: 14px;
             color: #333;
         }
 
-        .data-box p, .large-box p {
-            margin: 10px 0 0;
-            font-size: 18px;
+        .data-box p {
+            margin: 5px 0 0;
+            font-size: 16px;
             font-weight: bold;
             color: #007bff;
-        }
-
-        .empty {
-            width: 200px;
-            height: 100px;
         }
     </style>
 </head>
@@ -103,70 +96,97 @@
     </div>
 
     <div id="data-container">
-        <!-- Row 1 -->
-        <div class="data-box large-box" id="average-ap-box">
-            <h3>Average AP</h3>
-            <p id="average-ap">Loading...</p>
-        </div>
         <div class="data-box" id="ap-box"><h3>AP</h3><p id="ap">Loading...</p></div>
-        <div class="data-box" id="ap-gain-box"><h3>AP Gain</h3><p id="ap-gain">Loading...</p></div>
-        <div class="data-box large-box" id="merit-percentage-box">
-            <h3>Merit Percentage</h3>
-            <p id="merit-percentage">Loading...</p>
-        </div>
-
-        <!-- Row 2 -->
-        <div class="empty"></div>
         <div class="data-box" id="rank-box"><h3>Rank</h3><p id="rank">Loading...</p></div>
+        <div class="data-box" id="ap-gain-box"><h3>AP Gain</h3><p id="ap-gain">Loading...</p></div>
         <div class="data-box" id="power-change-box"><h3>Power Change</h3><p id="power-change">Loading...</p></div>
-        <div class="empty"></div>
-
-        <!-- Row 3 -->
-        <div class="data-box large-box" id="average-ap-gain-box">
-            <h3>Average AP Gain</h3>
-            <p id="average-ap-gain">Loading...</p>
-        </div>
-        <div class="data-box" id="merits-gained-detail-box"><h3>Merits Gained</h3><p id="merits-gained-detail">Loading...</p></div>
+        <div class="data-box" id="merits-gained-box"><h3>Merits Gained</h3><p id="merits-gained">Loading...</p></div>
         <div class="data-box" id="kill-change-box"><h3>Kill Change</h3><p id="kill-change">Loading...</p></div>
-        <div class="data-box large-box" id="merits-gained-box">
-            <h3>Merits Gained Percentage</h3>
-            <p id="merits-gained">Loading...</p>
-        </div>
-
-        <!-- Row 4 -->
-        <div class="empty"></div>
-        <div class="data-box" id="heal-change-box"><h3>Heal Change</h3><p id="heal-change">Loading...</p></div>
         <div class="data-box" id="death-change-box"><h3>Death Change</h3><p id="death-change">Loading...</p></div>
-        <div class="empty"></div>
-
-        <!-- Row 5 -->
-        <div class="empty"></div>
+        <div class="data-box" id="heal-change-box"><h3>Heal Change</h3><p id="heal-change">Loading...</p></div>
         <div class="data-box" id="weekly-donations-box"><h3>Weekly Donations</h3><p id="weekly-donations">Loading...</p></div>
         <div class="data-box" id="weekly-build-box"><h3>Weekly Build</h3><p id="weekly-build">Loading...</p></div>
-        <div class="empty"></div>
+        <!-- New boxes added -->
+        <div class="data-box" id="merits-percentage-box"><h3>Merits %</h3><p id="merits-percentage">Loading...</p></div>
+        <div class="data-box" id="ap-average-box"><h3>AP Average</h3><p id="ap-average">Loading...</p></div>
+        <div class="data-box" id="ap-gain-average-box"><h3>AP Gain Average</h3><p id="ap-gain-average">Loading...</p></div>
+        <div class="data-box" id="merits-gained-percentage-box"><h3>Merits Gained %</h3><p id="merits-gained-percentage">Loading...</p></div>
+        <div class="data-box" id="behemoths-box"><h3>Behemoths</h3><p id="behemoths">Loading...</p></div>
     </div>
 
     <script>
         let sheetData = [];
 
-        fetch("https://script.google.com/macros/s/AKfycbyVcVVn9z-QbjA_oy0Y3WSMBWh1OyEqBfOWd_GHiYag9VkOhux2lywnI3jZvHofvMyOQg/exec")
+        fetch("https://script.google.com/macros/s/AKfycby0EKCxP-m9idytRNIMQ3Y_lr-GObxLqO8zOpm9wSaZPp8gpciBAoYD3jK6pQQjeuUOSw/exec")
             .then(response => response.json())
             .then(data => {
                 sheetData = data;
             })
             .catch(error => console.error("Error fetching data:", error));
 
-        function displayData(person) {
-            const totalMerits = sheetData.reduce((sum, row) => sum + parseFloat(row["Merits Gained"] || 0), 0);
-            const playerMerits = parseFloat(person["Merits Gained"] || 0);
-            document.getElementById("merit-percentage").textContent = totalMerits ? ((playerMerits / totalMerits) * 100).toFixed(2) + "%" : "0%";
-
-            document.getElementById("ap").textContent = person["AP"];
-            document.getElementById("rank").textContent = person["Rank"];
-            document.getElementById("merits-gained-detail").textContent = person["Merits Gained"];
-            document.getElementById("heal-change").textContent = person["Heal Change"];
-            document.getElementById("weekly-donations").textContent = person["Weekly Donations"];
+        // Helper function to return 0 instead of "N/A"
+        function getValueOrZero(value) {
+            return value === 0 || value ? value : "0";
         }
+
+        // Helper function to format values to two decimal places
+        function formatValueToTwoDecimals(value) {
+            return value !== undefined && value !== null ? parseFloat(value).toFixed(2) : "0.00";
+        }
+
+        function displayData(person) {
+            document.getElementById("ap").textContent = formatValueToTwoDecimals(person["AP"]);
+            document.getElementById("rank").textContent = getValueOrZero(person["Rank"]);
+            document.getElementById("ap-gain").textContent = formatValueToTwoDecimals(person["AP Gain"]);
+            document.getElementById("power-change").textContent = getValueOrZero(person["Power Change"]);
+            document.getElementById("merits-gained").textContent = getValueOrZero(person["Merits Gained"]);
+            document.getElementById("kill-change").textContent = getValueOrZero(person["Kill Change"]);
+            document.getElementById("death-change").textContent = getValueOrZero(person["Death Change"]);
+            document.getElementById("heal-change").textContent = getValueOrZero(person["Heal Change"]);
+            document.getElementById("weekly-donations").textContent = getValueOrZero(person["Weekly Donations"]);
+            document.getElementById("weekly-build").textContent = getValueOrZero(person["Weekly Build"]);
+
+            // Displaying the new values
+            document.getElementById("merits-percentage").textContent = formatValueToTwoDecimals(person["Merits Percentage"]);
+            document.getElementById("ap-average").textContent = formatValueToTwoDecimals(person["AP Average"]);
+            document.getElementById("ap-gain-average").textContent = formatValueToTwoDecimals(person["AP Gain Average"]);
+            document.getElementById("merits-gained-percentage").textContent = getValueOrZero(person["Merits Gained Percentage"]);
+            document.getElementById("behemoths").textContent = getValueOrZero(person["Behemoths"]);
+        }
+
+        function searchPerson() {
+            const searchQuery = document.getElementById("search").value.toLowerCase();
+            const foundPerson = sheetData.find(person => person["Name"].toLowerCase().includes(searchQuery));
+
+            if (foundPerson) {
+                displayData(foundPerson);
+            } else {
+                resetDataDisplay();
+            }
+        }
+
+        function resetDataDisplay() {
+            const defaultValue = "Loading...";
+            document.getElementById("ap").textContent = defaultValue;
+            document.getElementById("rank").textContent = defaultValue;
+            document.getElementById("ap-gain").textContent = defaultValue;
+            document.getElementById("power-change").textContent = defaultValue;
+            document.getElementById("merits-gained").textContent = defaultValue;
+            document.getElementById("kill-change").textContent = defaultValue;
+            document.getElementById("death-change").textContent = defaultValue;
+            document.getElementById("heal-change").textContent = defaultValue;
+            document.getElementById("weekly-donations").textContent = defaultValue;
+            document.getElementById("weekly-build").textContent = defaultValue;
+
+            // Resetting new values
+            document.getElementById("merits-percentage").textContent = defaultValue;
+            document.getElementById("ap-average").textContent = defaultValue;
+            document.getElementById("ap-gain-average").textContent = defaultValue;
+            document.getElementById("merits-gained-percentage").textContent = defaultValue;
+            document.getElementById("behemoths").textContent = defaultValue;
+        }
+
+        document.getElementById("search").addEventListener("input", searchPerson);
     </script>
 </body>
 </html>
