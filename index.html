@@ -158,6 +158,31 @@
             document.getElementById("heal-change").textContent = person["Heal Change"];
             document.getElementById("weekly-donations").textContent = person["Weekly Donations"];
         }
+
+        function searchPerson() {
+            const searchQuery = document.getElementById("search").value.toLowerCase();
+            const foundPerson = sheetData.find(person => person["Name"].toLowerCase().includes(searchQuery));
+
+            if (foundPerson) {
+                displayData(foundPerson);
+            } else {
+                // If no person found, display a message or reset the display
+                resetDataDisplay();
+            }
+        }
+
+        function resetDataDisplay() {
+            // Clear all data fields
+            const defaultValue = "Loading...";
+            document.getElementById("ap").textContent = defaultValue;
+            document.getElementById("rank").textContent = defaultValue;
+            document.getElementById("merits-gained-detail").textContent = defaultValue;
+            document.getElementById("heal-change").textContent = defaultValue;
+            document.getElementById("weekly-donations").textContent = defaultValue;
+        }
+
+        // Add event listener to search input field
+        document.getElementById("search").addEventListener("input", searchPerson);
     </script>
 </body>
 </html>
