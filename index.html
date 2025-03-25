@@ -51,10 +51,10 @@
         #data-container {
             margin-top: 20px;
             display: grid;
-            grid-template-columns: 150px 150px 150px 150px 150px 150px 150px 150px; /* 8 columns */
+            grid-template-columns: 200px 200px 200px 200px 200px 200px 200px 200px 200px 200px; /* Added 5 more columns */
             grid-template-rows: auto;
             row-gap: 50px; /* 50px space between rows */
-            column-gap: 50px; /* 50px space between columns */
+            column-gap: 200px; /* 200px space between columns */
             justify-content: center;
             align-items: start;
         }
@@ -104,11 +104,13 @@
         <div class="data-box" id="heal-change-box"><h3>Heal Change</h3><p id="heal-change">Loading...</p></div>
         <div class="data-box" id="weekly-donations-box"><h3>Weekly Donations</h3><p id="weekly-donations">Loading...</p></div>
         <div class="data-box" id="weekly-build-box"><h3>Weekly Build</h3><p id="weekly-build">Loading...</p></div>
-        <!-- New boxes -->
+        
+        <!-- Added 5 new data boxes -->
         <div class="data-box" id="merits-percentage-box"><h3>Merits Percentage</h3><p id="merits-percentage">Loading...</p></div>
         <div class="data-box" id="ap-average-box"><h3>AP Average</h3><p id="ap-average">Loading...</p></div>
         <div class="data-box" id="ap-gain-average-box"><h3>AP Gain Average</h3><p id="ap-gain-average">Loading...</p></div>
         <div class="data-box" id="merits-gained-percentage-box"><h3>Merits Gained Percentage</h3><p id="merits-gained-percentage">Loading...</p></div>
+        <div class="data-box" id="behemoths-box"><h3>Behemoths</h3><p id="behemoths">Loading...</p></div>
     </div>
 
     <script>
@@ -132,21 +134,22 @@
 
         function displayData(person) {
             document.getElementById("ap").textContent = formatValueToTwoDecimals(person["AP"]);
-            document.getElementById("rank").textContent = formatValueToTwoDecimals(person["Rank"]);
-            document.getElementById("ap-gain").textContent = formatValueToTwoDecimals(person["AP Gain"]);
-            document.getElementById("power-change").textContent = formatValueToTwoDecimals(person["Power Change"]);
-            document.getElementById("merits-gained").textContent = formatValueToTwoDecimals(person["Merits Gained"]);
-            document.getElementById("kill-change").textContent = formatValueToTwoDecimals(person["Kill Change"]);
-            document.getElementById("death-change").textContent = formatValueToTwoDecimals(person["Death Change"]);
-            document.getElementById("heal-change").textContent = formatValueToTwoDecimals(person["Heal Change"]);
-            document.getElementById("weekly-donations").textContent = formatValueToTwoDecimals(person["Weekly Donations"]);
-            document.getElementById("weekly-build").textContent = formatValueToTwoDecimals(person["Weekly Build"]);
+            document.getElementById("rank").textContent = getValueOrZero(person["Rank"]);
+            document.getElementById("ap-gain").textContent = getValueOrZero(person["AP Gain"]);
+            document.getElementById("power-change").textContent = getValueOrZero(person["Power Change"]);
+            document.getElementById("merits-gained").textContent = getValueOrZero(person["Merits Gained"]);
+            document.getElementById("kill-change").textContent = getValueOrZero(person["Kill Change"]);
+            document.getElementById("death-change").textContent = getValueOrZero(person["Death Change"]);
+            document.getElementById("heal-change").textContent = getValueOrZero(person["Heal Change"]);
+            document.getElementById("weekly-donations").textContent = getValueOrZero(person["Weekly Donations"]);
+            document.getElementById("weekly-build").textContent = getValueOrZero(person["Weekly Build"]);
 
-            // New data fields
-            document.getElementById("merits-percentage").textContent = formatValueToTwoDecimals(person["Merits Percentage"]);
+            // Added 5 new data points
+            document.getElementById("merits-percentage").textContent = getValueOrZero(person["Merits Percentage"]);
             document.getElementById("ap-average").textContent = formatValueToTwoDecimals(person["AP Average"]);
             document.getElementById("ap-gain-average").textContent = formatValueToTwoDecimals(person["AP Gain Average"]);
-            document.getElementById("merits-gained-percentage").textContent = formatValueToTwoDecimals(person["Merits Gained Percentage"]);
+            document.getElementById("merits-gained-percentage").textContent = getValueOrZero(person["Merits Gained Percentage"]);
+            document.getElementById("behemoths").textContent = getValueOrZero(person["Behemoths"]);
         }
 
         function searchPerson() {
@@ -173,8 +176,15 @@
             document.getElementById("weekly-donations").textContent = defaultValue;
             document.getElementById("weekly-build").textContent = defaultValue;
 
-            // New default values
+            // Reset new data points
             document.getElementById("merits-percentage").textContent = defaultValue;
             document.getElementById("ap-average").textContent = defaultValue;
             document.getElementById("ap-gain-average").textContent = defaultValue;
-            document.getElementById
+            document.getElementById("merits-gained-percentage").textContent = defaultValue;
+            document.getElementById("behemoths").textContent = defaultValue;
+        }
+
+        document.getElementById("search").addEventListener("input", searchPerson);
+    </script>
+</body>
+</html>
