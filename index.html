@@ -95,7 +95,6 @@
     </div>
 
     <div id="data-container">
-        <!-- Row 1 -->
         <div class="data-box" id="average-ap-box">
             <h3>Average AP</h3>
             <p id="average-ap">Loading...</p>
@@ -107,13 +106,11 @@
             <p id="merit-percentage">Loading...</p>
         </div>
 
-        <!-- Row 2 -->
         <div class="data-box"></div>
         <div class="data-box" id="rank-box"><h3>Rank</h3><p id="rank">Loading...</p></div>
         <div class="data-box" id="power-change-box"><h3>Power Change</h3><p id="power-change">Loading...</p></div>
         <div class="data-box"></div>
 
-        <!-- Row 3 -->
         <div class="data-box" id="average-ap-gain-box">
             <h3>Average AP Gain</h3>
             <p id="average-ap-gain">Loading...</p>
@@ -125,13 +122,11 @@
             <p id="merits-gained">Loading...</p>
         </div>
 
-        <!-- Row 4 -->
         <div class="data-box"></div>
         <div class="data-box" id="heal-change-box"><h3>Heal Change</h3><p id="heal-change">Loading...</p></div>
         <div class="data-box" id="death-change-box"><h3>Death Change</h3><p id="death-change">Loading...</p></div>
         <div class="data-box"></div>
 
-        <!-- Row 5 -->
         <div class="data-box"></div>
         <div class="data-box" id="weekly-donations-box"><h3>Weekly Donations</h3><p id="weekly-donations">Loading...</p></div>
         <div class="data-box" id="weekly-build-box"><h3>Weekly Build</h3><p id="weekly-build">Loading...</p></div>
@@ -146,6 +141,7 @@
             .then(response => response.json())
             .then(data => {
                 sheetData = data;
+                console.log('Fetched Data:', sheetData);  // Log fetched data for debugging
 
                 // Populate the dropdown with names
                 const nameDropdown = document.getElementById("name-dropdown");
@@ -155,7 +151,9 @@
                     nameDropdown.appendChild(option);
                 });
             })
-            .catch(error => console.error("Error fetching data:", error));
+            .catch(error => {
+                console.error("Error fetching data:", error);
+            });
 
         // Function to display data for a person
         function displayData(person) {
@@ -179,13 +177,34 @@
 
         // Add event listener to search input
         document.getElementById("search").addEventListener("input", function(event) {
-            const name = event.target.value;
-            const person = sheetData.find(item => item.Name.toLowerCase() === name.toLowerCase());
-
-            if (person) {
-                displayData(person);
+            const name = event.target.value.trim();
+            if (name) {
+                const person = sheetData.find(item => item.Name.toLowerCase() === name.toLowerCase());
+                if (person) {
+                    displayData(person);
+                }
+            } else {
+                // Clear the data if search is empty
+                clearData();
             }
         });
+
+        // Clear displayed data
+        function clearData() {
+            document.getElementById("average-ap").textContent = "Loading...";
+            document.getElementById("ap").textContent = "Loading...";
+            document.getElementById("ap-gain").textContent = "Loading...";
+            document.getElementById("average-ap-gain").textContent = "Loading...";
+            document.getElementById("rank").textContent = "Loading...";
+            document.getElementById("power-change").textContent = "Loading...";
+            document.getElementById("merits-gained-detail").textContent = "Loading...";
+            document.getElementById("kill-change").textContent = "Loading...";
+            document.getElementById("merits-gained").textContent = "Loading...";
+            document.getElementById("heal-change").textContent = "Loading...";
+            document.getElementById("death-change").textContent = "Loading...";
+            document.getElementById("weekly-donations").textContent = "Loading...";
+            document.getElementById("weekly-build").textContent = "Loading...";
+        }
     </script>
 </body>
 </html>
