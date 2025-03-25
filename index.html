@@ -147,16 +147,24 @@
             })
             .catch(error => console.error("Error fetching data:", error));
 
+        // Helper function to return 0 instead of N/A when the value is 0
+        function getValueOrZero(value) {
+            return value === 0 || value ? value : "0";
+        }
+
         function displayData(person) {
             const totalMerits = sheetData.reduce((sum, row) => sum + parseFloat(row["Merits Gained"] || 0), 0);
             const playerMerits = parseFloat(person["Merits Gained"] || 0);
-            document.getElementById("merit-percentage").textContent = totalMerits ? ((playerMerits / totalMerits) * 100).toFixed(2) + "%" : "0%";
+            document.getElementById("merit-percentage").textContent = totalMerits
+                ? ((playerMerits / totalMerits) * 100).toFixed(2) + "%"
+                : "0%";
 
-            document.getElementById("ap").textContent = person["AP"];
-            document.getElementById("rank").textContent = person["Rank"];
-            document.getElementById("merits-gained-detail").textContent = person["Merits Gained"];
-            document.getElementById("heal-change").textContent = person["Heal Change"];
-            document.getElementById("weekly-donations").textContent = person["Weekly Donations"];
+            // Ensure that we don't display N/A for 0 values
+            document.getElementById("ap").textContent = getValueOrZero(person["AP"]);
+            document.getElementById("rank").textContent = getValueOrZero(person["Rank"]);
+            document.getElementById("merits-gained-detail").textContent = getValueOrZero(person["Merits Gained"]);
+            document.getElementById("heal-change").textContent = getValueOrZero(person["Heal Change"]);
+            document.getElementById("weekly-donations").textContent = getValueOrZero(person["Weekly Donations"]);
         }
 
         function searchPerson() {
