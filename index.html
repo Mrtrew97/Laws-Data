@@ -57,6 +57,7 @@
             column-gap: 150px; /* 150px space between columns */
             justify-content: center;
             align-items: start;
+            width: 500px; /* Set a fixed width to control grid width */
         }
 
         .data-box {
@@ -175,7 +176,8 @@
             document.getElementById("heal-change").textContent = defaultValue;
             document.getElementById("weekly-donations").textContent = defaultValue;
             document.getElementById("weekly-build").textContent = defaultValue;
-            // Reset new fields to "Loading..."
+
+            // Resetting new values
             document.getElementById("merits-percentage").textContent = defaultValue;
             document.getElementById("ap-average").textContent = defaultValue;
             document.getElementById("ap-gain-average").textContent = defaultValue;
