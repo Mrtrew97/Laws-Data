@@ -51,7 +51,7 @@
         #data-container {
             margin-top: 20px;
             display: grid;
-            grid-template-columns: 200px 200px 200px 200px 200px 200px 200px 200px 200px 200px; /* Added 5 more columns */
+            grid-template-columns: repeat(3, 200px); /* 3 columns with 200px width */
             grid-template-rows: auto;
             row-gap: 50px; /* 50px space between rows */
             column-gap: 200px; /* 200px space between columns */
@@ -172,19 +172,4 @@
             document.getElementById("merits-gained").textContent = defaultValue;
             document.getElementById("kill-change").textContent = defaultValue;
             document.getElementById("death-change").textContent = defaultValue;
-            document.getElementById("heal-change").textContent = defaultValue;
-            document.getElementById("weekly-donations").textContent = defaultValue;
-            document.getElementById("weekly-build").textContent = defaultValue;
-
-            // Reset new data points
-            document.getElementById("merits-percentage").textContent = defaultValue;
-            document.getElementById("ap-average").textContent = defaultValue;
-            document.getElementById("ap-gain-average").textContent = defaultValue;
-            document.getElementById("merits-gained-percentage").textContent = defaultValue;
-            document.getElementById("behemoths").textContent = defaultValue;
-        }
-
-        document.getElementById("search").addEventListener("input", searchPerson);
-    </script>
-</body>
-</html>
+            document.getElementById
