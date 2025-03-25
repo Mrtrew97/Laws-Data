@@ -5,7 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laws Data</title>
     <style>
-        /* Add your styles here (same as before) */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            text-align: center;
+            background: url("https://i.imgur.com/bOOzwSt.jpeg") no-repeat center center fixed;
+            background-size: cover;
+            background-attachment: fixed;
+            position: relative;
+        }
+
+        .header-banner {
+            width: 100%;
+            height: 200px;
+            background-image: url("https://i.imgur.com/7pZN3Sw.jpeg");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .search-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        #search {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            border: 4px double #000;
+            outline: 3px solid #000;
+            outline-offset: 2px;
+            border-radius: 5px;
+            background: #b4b4b4;
+            text-align: center;
+        }
+
+        #data-container {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: 200px 200px 200px 200px; /* 4 columns */
+            grid-template-rows: auto;
+            row-gap: 50px; /* 50px space between rows */
+            column-gap: 200px; /* 200px space between columns */
+            justify-content: center;
+            align-items: start;
+        }
+
+        .data-box {
+            padding: 15px;
+            background-color: #b4b4b4;
+            border: 4px double #000;
+            outline: 3px solid #000;
+            outline-offset: 2px;
+            border-radius: 5px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 200px;
+            height: 200px; /* All boxes now match the Rank box */
+        }
+
+        .data-box h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .data-box p {
+            margin: 10px 0 0;
+            font-size: 18px;
+            font-weight: bold;
+            color: #007bff;
+        }
     </style>
 </head>
 <body>
@@ -16,13 +94,52 @@
     </div>
 
     <div id="data-container">
-        <!-- Same as before with data-box elements -->
+        <!-- Row 1 -->
+        <div class="data-box" id="average-ap-box">
+            <h3>Average AP</h3>
+            <p id="average-ap">Loading...</p>
+        </div>
+        <div class="data-box" id="ap-box"><h3>AP</h3><p id="ap">Loading...</p></div>
+        <div class="data-box" id="ap-gain-box"><h3>AP Gain</h3><p id="ap-gain">Loading...</p></div>
+        <div class="data-box" id="merit-percentage-box">
+            <h3>Merit Percentage</h3>
+            <p id="merit-percentage">Loading...</p>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="data-box"></div>
+        <div class="data-box" id="rank-box"><h3>Rank</h3><p id="rank">Loading...</p></div>
+        <div class="data-box" id="power-change-box"><h3>Power Change</h3><p id="power-change">Loading...</p></div>
+        <div class="data-box"></div>
+
+        <!-- Row 3 -->
+        <div class="data-box" id="average-ap-gain-box">
+            <h3>Average AP Gain</h3>
+            <p id="average-ap-gain">Loading...</p>
+        </div>
+        <div class="data-box" id="merits-gained-detail-box"><h3>Merits Gained</h3><p id="merits-gained-detail">Loading...</p></div>
+        <div class="data-box" id="kill-change-box"><h3>Kill Change</h3><p id="kill-change">Loading...</p></div>
+        <div class="data-box" id="merits-gained-box">
+            <h3>Merits Gained Percentage</h3>
+            <p id="merits-gained">Loading...</p>
+        </div>
+
+        <!-- Row 4 -->
+        <div class="data-box"></div>
+        <div class="data-box" id="heal-change-box"><h3>Heal Change</h3><p id="heal-change">Loading...</p></div>
+        <div class="data-box" id="death-change-box"><h3>Death Change</h3><p id="death-change">Loading...</p></div>
+        <div class="data-box"></div>
+
+        <!-- Row 5 -->
+        <div class="data-box"></div>
+        <div class="data-box" id="weekly-donations-box"><h3>Weekly Donations</h3><p id="weekly-donations">Loading...</p></div>
+        <div class="data-box" id="weekly-build-box"><h3>Weekly Build</h3><p id="weekly-build">Loading...</p></div>
+        <div class="data-box"></div>
     </div>
 
     <script>
         let sheetData = [];
 
-        // Fetch data from Google Sheets
         fetch("https://script.google.com/macros/s/AKfycbyVcVVn9z-QbjA_oy0Y3WSMBWh1OyEqBfOWd_GHiYag9VkOhux2lywnI3jZvHofvMyOQg/exec")
             .then(response => response.json())
             .then(data => {
@@ -30,19 +147,6 @@
             })
             .catch(error => console.error("Error fetching data:", error));
 
-        // Event listener for search input
-        document.getElementById("search").addEventListener("input", function() {
-            const searchQuery = this.value.toLowerCase();
-            const foundPerson = sheetData.find(person => person["Name"].toLowerCase().includes(searchQuery));
-
-            if (foundPerson) {
-                displayData(foundPerson);
-            } else {
-                clearData();
-            }
-        });
-
-        // Function to display data for the selected person
         function displayData(person) {
             const totalMerits = sheetData.reduce((sum, row) => sum + parseFloat(row["Merits Gained"] || 0), 0);
             const playerMerits = parseFloat(person["Merits Gained"] || 0);
@@ -53,16 +157,6 @@
             document.getElementById("merits-gained-detail").textContent = person["Merits Gained"];
             document.getElementById("heal-change").textContent = person["Heal Change"];
             document.getElementById("weekly-donations").textContent = person["Weekly Donations"];
-        }
-
-        // Function to clear the data if no match is found
-        function clearData() {
-            document.getElementById("average-ap").textContent = "No results found.";
-            document.getElementById("ap").textContent = "";
-            document.getElementById("rank").textContent = "";
-            document.getElementById("merits-gained-detail").textContent = "";
-            document.getElementById("heal-change").textContent = "";
-            document.getElementById("weekly-donations").textContent = "";
         }
     </script>
 </body>
