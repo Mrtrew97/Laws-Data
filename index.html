@@ -90,7 +90,7 @@
     <div class="header-banner"></div>
 
     <div class="search-container">
-        <input type="text" id="search" placeholder="Search for a name..." autocomplete="off">
+        <input type="text" id="search" placeholder="Search for a name..." autocomplete="off" list="name-dropdown">
         <datalist id="name-dropdown">
             <!-- Dropdown options will be dynamically populated -->
         </datalist>
@@ -143,16 +143,15 @@
     <script>
         let sheetData = [];
 
-        // Fetch data from Google Sheets
+        // Fetch data from the new Google Sheets script
         fetch("https://script.google.com/macros/s/AKfycbxXSyJJ19BpksulDCgg0HlGOKkzoJsdWWMmovQMjMXLImSIM-IQ7DOXMPbbJmn3VI9d6Q/exec")
             .then(response => response.json())
             .then(data => {
                 sheetData = data;
 
-                // Populate the datalist with names from column E
+                // Populate the datalist with names from column E (assuming the header for column E is "Name")
                 const dropdown = document.getElementById("name-dropdown");
 
-                // Add names from column E (assuming "Name" is the header for column E)
                 sheetData.forEach(item => {
                     const name = item["Name"]; // Adjust if the header for column E is different
                     const option = document.createElement("option");
@@ -160,7 +159,7 @@
                     dropdown.appendChild(option);
                 });
 
-                // Add search functionality
+                // Add search functionality for filtering names
                 document.getElementById("search").addEventListener("input", function () {
                     const searchTerm = this.value.toLowerCase();
                     const filteredNames = sheetData
@@ -176,6 +175,15 @@
                         option.value = name;
                         dropdown.appendChild(option);
                     });
+                });
+
+                // Add event listener for when a name is selected
+                document.getElementById("search").addEventListener("change", function() {
+                    const selectedName = this.value;
+                    const person = sheetData.find(item => item["Name"] === selectedName);
+                    if (person) {
+                        displayData(person);
+                    }
                 });
             })
             .catch(error => console.error("Error fetching data:", error));
