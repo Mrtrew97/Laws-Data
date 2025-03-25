@@ -1,79 +1,163 @@
-<script>
-let sheetData = [];
-
-fetch("https://script.google.com/macros/s/AKfycbyj2xK_24nFqfKrLMfD1QimO0wyd9fxhXVmgRGLjp4Y-a5iLRZtY_bTE36RXq5lFI2-ug/exec")
-    .then(response => response.json())
-    .then(data => {
-        sheetData = data;
-        populateDropdown(sheetData);
-    })
-    .catch(error => console.error("Error fetching data:", error));
-
-function populateDropdown(data) {
-    const searchInput = document.getElementById("search");
-
-    searchInput.addEventListener("input", function () {
-        const inputValue = searchInput.value.toLowerCase();
-        const matchingNames = data
-            .map(person => person["Name"])
-            .filter(name => name.toLowerCase().includes(inputValue));
-
-        showDropdown(matchingNames);
-    });
-
-    searchInput.addEventListener("change", function () {
-        const selectedPerson = data.find(person => person["Name"] === searchInput.value);
-        if (selectedPerson) {
-            displayData(selectedPerson);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laws Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            text-align: center;
+            background: url("https://i.imgur.com/bOOzwSt.jpeg") no-repeat center center fixed;
+            background-size: cover;
+            background-attachment: fixed;
+            position: relative;
         }
-    });
-}
 
-function showDropdown(names) {
-    let dropdown = document.getElementById("dropdown");
-    if (!dropdown) {
-        dropdown = document.createElement("div");
-        dropdown.id = "dropdown";
-        dropdown.style.position = "absolute";
-        dropdown.style.background = "#b4b4b4";
-        dropdown.style.border = "2px solid black";
-        dropdown.style.width = "300px";
-        dropdown.style.zIndex = "1000";
-        document.querySelector(".search-container").appendChild(dropdown);
-    }
-    dropdown.innerHTML = "";
+        .header-banner {
+            width: 100%;
+            height: 200px;
+            background-image: url("https://i.imgur.com/7pZN3Sw.jpeg");
+            background-size: cover;
+            background-position: center;
+        }
 
-    names.forEach(name => {
-        const item = document.createElement("div");
-        item.textContent = name;
-        item.style.padding = "5px";
-        item.style.cursor = "pointer";
-        item.addEventListener("click", function () {
-            document.getElementById("search").value = name;
-            dropdown.innerHTML = "";
-            const selectedPerson = sheetData.find(person => person["Name"] === name);
-            displayData(selectedPerson);
-        });
-        dropdown.appendChild(item);
-    });
-}
+        .search-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-top: 20px;
+        }
 
-function displayData(person) {
-    if (!person) return;
+        #search {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            border: 4px double #000;
+            outline: 3px solid #000;
+            outline-offset: 2px;
+            border-radius: 5px;
+            background: #b4b4b4;
+            text-align: center;
+        }
 
-    document.getElementById("ap").textContent = person["AP"] || "N/A";
-    document.getElementById("ap-gain").textContent = person["AP Gain"] || "N/A";
-    document.getElementById("rank").textContent = person["Rank"] || "N/A";
-    document.getElementById("power-change").textContent = person["Power Change"] || "N/A";
-    document.getElementById("merits-gained-detail").textContent = person["Merits Gained"] || "N/A";
-    document.getElementById("kill-change").textContent = person["Kill Change"] || "N/A";
-    document.getElementById("heal-change").textContent = person["Heal Change"] || "N/A";
-    document.getElementById("death-change").textContent = person["Death Change"] || "N/A";
-    document.getElementById("weekly-donations").textContent = person["Weekly Donations"] || "N/A";
-    document.getElementById("weekly-build").textContent = person["Weekly Build"] || "N/A";
+        #data-container {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: 200px 200px 200px 200px; /* 4 columns */
+            grid-template-rows: auto;
+            row-gap: 50px; /* 50px space between rows */
+            column-gap: 200px; /* 200px space between columns */
+            justify-content: center;
+            align-items: start;
+        }
 
-    const totalMerits = sheetData.reduce((sum, row) => sum + parseFloat(row["Merits Gained"] || 0), 0);
-    const playerMerits = parseFloat(person["Merits Gained"] || 0);
-    document.getElementById("merit-percentage").textContent = totalMerits ? ((playerMerits / totalMerits) * 100).toFixed(2) + "%" : "0%";
-}
-</script>
+        .data-box {
+            padding: 15px;
+            background-color: #b4b4b4;
+            border: 4px double #000;
+            outline: 3px solid #000;
+            outline-offset: 2px;
+            border-radius: 5px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 200px;
+            height: 200px; /* All boxes now match the Rank box */
+        }
+
+        .data-box h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .data-box p {
+            margin: 10px 0 0;
+            font-size: 18px;
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-banner"></div>
+
+    <div class="search-container">
+        <input type="text" id="search" placeholder="Search for a name..." autocomplete="off">
+    </div>
+
+    <div id="data-container">
+        <!-- Row 1 -->
+        <div class="data-box" id="average-ap-box">
+            <h3>Average AP</h3>
+            <p id="average-ap">Loading...</p>
+        </div>
+        <div class="data-box" id="ap-box"><h3>AP</h3><p id="ap">Loading...</p></div>
+        <div class="data-box" id="ap-gain-box"><h3>AP Gain</h3><p id="ap-gain">Loading...</p></div>
+        <div class="data-box" id="merit-percentage-box">
+            <h3>Merit Percentage</h3>
+            <p id="merit-percentage">Loading...</p>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="data-box"></div>
+        <div class="data-box" id="rank-box"><h3>Rank</h3><p id="rank">Loading...</p></div>
+        <div class="data-box" id="power-change-box"><h3>Power Change</h3><p id="power-change">Loading...</p></div>
+        <div class="data-box"></div>
+
+        <!-- Row 3 -->
+        <div class="data-box" id="average-ap-gain-box">
+            <h3>Average AP Gain</h3>
+            <p id="average-ap-gain">Loading...</p>
+        </div>
+        <div class="data-box" id="merits-gained-detail-box"><h3>Merits Gained</h3><p id="merits-gained-detail">Loading...</p></div>
+        <div class="data-box" id="kill-change-box"><h3>Kill Change</h3><p id="kill-change">Loading...</p></div>
+        <div class="data-box" id="merits-gained-box">
+            <h3>Merits Gained Percentage</h3>
+            <p id="merits-gained">Loading...</p>
+        </div>
+
+        <!-- Row 4 -->
+        <div class="data-box"></div>
+        <div class="data-box" id="heal-change-box"><h3>Heal Change</h3><p id="heal-change">Loading...</p></div>
+        <div class="data-box" id="death-change-box"><h3>Death Change</h3><p id="death-change">Loading...</p></div>
+        <div class="data-box"></div>
+
+        <!-- Row 5 -->
+        <div class="data-box"></div>
+        <div class="data-box" id="weekly-donations-box"><h3>Weekly Donations</h3><p id="weekly-donations">Loading...</p></div>
+        <div class="data-box" id="weekly-build-box"><h3>Weekly Build</h3><p id="weekly-build">Loading...</p></div>
+        <div class="data-box"></div>
+    </div>
+
+    <script>
+        let sheetData = [];
+
+        fetch("https://script.google.com/macros/s/AKfycbyVcVVn9z-QbjA_oy0Y3WSMBWh1OyEqBfOWd_GHiYag9VkOhux2lywnI3jZvHofvMyOQg/exec")
+            .then(response => response.json())
+            .then(data => {
+                sheetData = data;
+            })
+            .catch(error => console.error("Error fetching data:", error));
+
+        function displayData(person) {
+            const totalMerits = sheetData.reduce((sum, row) => sum + parseFloat(row["Merits Gained"] || 0), 0);
+            const playerMerits = parseFloat(person["Merits Gained"] || 0);
+            document.getElementById("merit-percentage").textContent = totalMerits ? ((playerMerits / totalMerits) * 100).toFixed(2) + "%" : "0%";
+
+            document.getElementById("ap").textContent = person["AP"];
+            document.getElementById("rank").textContent = person["Rank"];
+            document.getElementById("merits-gained-detail").textContent = person["Merits Gained"];
+            document.getElementById("heal-change").textContent = person["Heal Change"];
+            document.getElementById("weekly-donations").textContent = person["Weekly Donations"];
+        }
+    </script>
+</body>
+</html>
