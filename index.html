@@ -94,10 +94,15 @@
     </div>
 
     <div id="data-container">
+        <div class="data-box" id="ap-box"><h3>AP</h3><p id="ap">Loading...</p></div>
+        <div class="data-box" id="rank-box"><h3>Rank</h3><p id="rank">Loading...</p></div>
         <div class="data-box" id="ap-gain-box"><h3>AP Gain</h3><p id="ap-gain">Loading...</p></div>
         <div class="data-box" id="power-change-box"><h3>Power Change</h3><p id="power-change">Loading...</p></div>
+        <div class="data-box" id="merits-gained-box"><h3>Merits Gained</h3><p id="merits-gained">Loading...</p></div>
         <div class="data-box" id="kill-change-box"><h3>Kill Change</h3><p id="kill-change">Loading...</p></div>
         <div class="data-box" id="death-change-box"><h3>Death Change</h3><p id="death-change">Loading...</p></div>
+        <div class="data-box" id="heal-change-box"><h3>Heal Change</h3><p id="heal-change">Loading...</p></div>
+        <div class="data-box" id="weekly-donations-box"><h3>Weekly Donations</h3><p id="weekly-donations">Loading...</p></div>
         <div class="data-box" id="weekly-build-box"><h3>Weekly Build</h3><p id="weekly-build">Loading...</p></div>
     </div>
 
@@ -117,11 +122,15 @@
         }
 
         function displayData(person) {
-            // Ensure that all required fields use getValueOrZero
+            document.getElementById("ap").textContent = getValueOrZero(person["AP"]);
+            document.getElementById("rank").textContent = getValueOrZero(person["Rank"]);
             document.getElementById("ap-gain").textContent = getValueOrZero(person["AP Gain"]);
             document.getElementById("power-change").textContent = getValueOrZero(person["Power Change"]);
+            document.getElementById("merits-gained").textContent = getValueOrZero(person["Merits Gained"]);
             document.getElementById("kill-change").textContent = getValueOrZero(person["Kill Change"]);
             document.getElementById("death-change").textContent = getValueOrZero(person["Death Change"]);
+            document.getElementById("heal-change").textContent = getValueOrZero(person["Heal Change"]);
+            document.getElementById("weekly-donations").textContent = getValueOrZero(person["Weekly Donations"]);
             document.getElementById("weekly-build").textContent = getValueOrZero(person["Weekly Build"]);
         }
 
@@ -138,10 +147,15 @@
 
         function resetDataDisplay() {
             const defaultValue = "Loading...";
+            document.getElementById("ap").textContent = defaultValue;
+            document.getElementById("rank").textContent = defaultValue;
             document.getElementById("ap-gain").textContent = defaultValue;
             document.getElementById("power-change").textContent = defaultValue;
+            document.getElementById("merits-gained").textContent = defaultValue;
             document.getElementById("kill-change").textContent = defaultValue;
             document.getElementById("death-change").textContent = defaultValue;
+            document.getElementById("heal-change").textContent = defaultValue;
+            document.getElementById("weekly-donations").textContent = defaultValue;
             document.getElementById("weekly-build").textContent = defaultValue;
         }
 
