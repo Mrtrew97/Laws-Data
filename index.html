@@ -8,6 +8,7 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
+            padding: 0; /* Remove padding to prevent side borders */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -17,7 +18,6 @@
             background: url("https://i.imgur.com/bOOzwSt.jpeg") no-repeat center center fixed;
             background-size: cover;
             background-attachment: fixed;
-            position: relative;
         }
 
         .header-banner {
@@ -51,14 +51,16 @@
         #data-container {
             margin-top: 20px;
             display: grid;
-            grid-template-columns: 150px 150px 150px; /* 3 columns */
+            grid-template-columns: repeat(3, 150px); /* 3 columns */
             grid-template-rows: auto;
-            row-gap: 40px; /* 50px space between rows */
+            row-gap: 50px; /* 50px space between rows */
             column-gap: 75px; /* 75px space between columns */
             justify-content: center;
             align-items: start;
-            width: 500px; /* Set a fixed width to control grid width */
-            margin-left: -25px; /* Slightly shift columns to the left */
+            width: 100%; /* Make the container width 100% */
+            max-width: 900px; /* Set a max-width to prevent overflow */
+            padding: 0 20px; /* Add padding to the sides */
+            box-sizing: border-box; /* Ensure padding is included in the width */
         }
 
         .data-box {
