@@ -128,6 +128,11 @@
                     // Format the value to 2 decimal places if it's a number
                     if (!isNaN(value)) {
                         value = Number(value).toFixed(2);
+
+                        // Check if both decimal places are 0, and if so, remove decimals
+                        if (parseFloat(value) === parseInt(value)) {
+                            value = parseInt(value).toString(); // Show as integer
+                        }
                     }
 
                     let div = document.createElement("div");
