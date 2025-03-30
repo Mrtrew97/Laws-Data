@@ -147,11 +147,15 @@
             const dropdown = document.getElementById("dropdown");
             dropdown.innerHTML = "";
             if (query.length > 0) {
-                const filteredData = sheetData.filter(p => p["Name"].toLowerCase().includes(query));
+                // Filter by both Name and ID (column G)
+                const filteredData = sheetData.filter(p => 
+                    p["Name"].toLowerCase().includes(query) || 
+                    p["ID"] && p["ID"].toString().includes(query)
+                );
                 dropdown.style.display = filteredData.length > 0 ? "block" : "none";
                 filteredData.forEach(person => {
                     const div = document.createElement("div");
-                    div.textContent = person["Name"];
+                    div.textContent = person["Name"] + " (ID: " + person["ID"] + ")";
                     div.addEventListener("click", () => {
                         document.getElementById("search").value = person["Name"];
                         dropdown.style.display = "none";
