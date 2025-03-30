@@ -112,8 +112,17 @@
         function displayData(person) {
             let container = document.getElementById("data-container");
             container.innerHTML = "";
+
+            // List of fields to display
+            const fieldsToShow = [
+                "AP", "AP Gain", "Rank", "Power Change", "Merits", "Merits Gained", 
+                "Kill Change", "Heal Change", "Death Change", "Behemoths", 
+                "Merits Percentage", "AP Average", "AP Gain Average", "Merits Gained Percentage"
+            ];
+
+            // Display only the fields that are in the `fieldsToShow` list
             Object.keys(person).forEach(key => {
-                if (key !== "Name") {
+                if (fieldsToShow.includes(key)) {
                     let div = document.createElement("div");
                     div.classList.add("data-box");
                     div.innerHTML = `<h3>${key}</h3><p>${person[key] || "0"}</p>`;
