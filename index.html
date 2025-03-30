@@ -6,8 +6,8 @@
     <title>Laws Data</title>
     <style>
         :root {
-            --horizontal-gap: 20px; /* Adjust this value to change the horizontal gap */
-            --vertical-gap: 20px;   /* Adjust this value to change the vertical gap */
+            --horizontal-gap: 20px;
+            --vertical-gap: 20px;
         }
 
         body {
@@ -16,7 +16,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start; /* Aligning the content at the top */
+            justify-content: flex-start;
             height: 100vh;
             text-align: center;
             background: linear-gradient(0deg, #00000088 100%, #ffffff44 100%), url("https://i.imgur.com/bOOzwSt.jpeg") no-repeat center center fixed;
@@ -40,7 +40,7 @@
             justify-content: center;
             align-items: center;
             width: 100%;
-            margin-top: 20px; /* Adjusted margin for correct position below the banner */
+            margin-top: 20px;
         }
 
         #search {
@@ -53,21 +53,21 @@
             border-radius: 5px;
             background: #b4b4b4;
             text-align: center;
-            margin-bottom: 5px; /* Space between the search bar and dropdown */
+            margin-bottom: 5px;
         }
 
         #dropdown {
-            width: 320px; /* Same width as the search bar */
+            width: 320px;
             max-height: 150px;
             overflow-y: auto;
-            background: #b4b4b4; /* Match the background with the search bar */
+            background: #b4b4b4;
             border: 4px double #000;
-            border-top: none; /* Remove the top border to make it look attached to the search bar */
+            border-top: none;
             position: absolute;
-            top: 40px; /* Position the dropdown right below the search bar */
+            top: 40px;
             z-index: 10;
             display: none;
-            font-size: 16px; /* Match the font size of the search bar */
+            font-size: 16px;
             color: #000;
         }
 
@@ -83,16 +83,16 @@
         #data-container {
             margin-top: 20px;
             display: grid;
-            grid-template-rows: repeat(5, auto); /* 5 rows */
-            grid-column-gap: var(--horizontal-gap); /* Horizontal gap */
-            grid-row-gap: var(--vertical-gap); /* Vertical gap */
+            grid-template-rows: repeat(5, auto);
+            grid-column-gap: var(--horizontal-gap);
+            grid-row-gap: var(--vertical-gap);
             width: 80%;
             max-width: 800px;
         }
 
         .data-box {
-            width: 150px;  /* Fixed width */
-            height: 50px;  /* Fixed height */
+            width: 150px;
+            height: 50px;
             padding: 10px;
             background-color: #b4b4b4;
             border: 4px double #000;
@@ -105,13 +105,13 @@
 
         .data-box h3 {
             margin: 0;
-            font-size: 18px;  /* Updated font size */
+            font-size: 18px;
             color: #000000;
         }
 
         .data-box p {
             margin: 5px 0 0;
-            font-size: 16px;  /* Updated font size */
+            font-size: 16px;
             font-weight: bold;
             color: #000;
         }
@@ -131,7 +131,7 @@
     <div id="data-container"></div>
     <script>
         let sheetData = [];
-        const scriptURL = "https://script.google.com/macros/s/AKfycbzORX_KlA_CN0_tLPF_ZQwoWQGXFhhj2EGITWLHE6sd1-uXyI9uijdGhpB0pQhicJT5Dg/exec";
+        const scriptURL = "https://script.google.com/macros/s/AKfycbzHs3KYXcR0C910pgiV8eDdLQcNy6n8a7odi7L6jhjmIIjyHBb1MYOJlKZr7GPa7Fj8oQ/exec";
 
         async function fetchData() {
             try {
@@ -147,7 +147,6 @@
             const dropdown = document.getElementById("dropdown");
             dropdown.innerHTML = "";
             if (query.length > 0) {
-                // Filter by both Name and ID (column G)
                 const filteredData = sheetData.filter(p => 
                     p["Name"].toLowerCase().includes(query) || 
                     p["ID"] && p["ID"].toString().includes(query)
@@ -209,11 +208,11 @@
             });
 
             const rows = [
-                boxes.slice(0, 4), // Row 1
-                boxes.slice(4, 8), // Row 2
-                boxes.slice(8, 12), // Row 3
-                boxes.slice(12, 16), // Row 4
-                boxes.slice(16, 20) // Row 5
+                boxes.slice(0, 4),
+                boxes.slice(4, 8),
+                boxes.slice(8, 12),
+                boxes.slice(12, 16),
+                boxes.slice(16, 20)
             ];
 
             rows.forEach(rowBoxes => {
