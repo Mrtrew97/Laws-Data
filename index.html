@@ -123,9 +123,16 @@
             // Display only the fields that are in the `fieldsToShow` list
             Object.keys(person).forEach(key => {
                 if (fieldsToShow.includes(key)) {
+                    let value = person[key];
+
+                    // Format the value to 2 decimal places if it's a number
+                    if (!isNaN(value)) {
+                        value = parseFloat(value).toFixed(2);
+                    }
+
                     let div = document.createElement("div");
                     div.classList.add("data-box");
-                    div.innerHTML = `<h3>${key}</h3><p>${person[key] || "0"}</p>`;
+                    div.innerHTML = `<h3>${key}</h3><p>${value || "0"}</p>`;
                     container.appendChild(div);
                 }
             });
