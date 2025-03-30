@@ -51,10 +51,8 @@
         #data-container {
             margin-top: 20px;
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 4 equal-width columns */
+            grid-template-columns: 1fr 1fr 1fr 1fr; /* Four equal columns */
             gap: 20px;
-            justify-content: center;
-            align-items: start;
             width: 80%;
             max-width: 800px;
         }
@@ -153,7 +151,7 @@
                 }
             });
 
-            // Append boxes to their respective columns
+            // Clear container and append boxes to their respective columns
             column1.forEach(item => container.appendChild(item));
             column2.forEach(item => container.appendChild(item));
             column3.forEach(item => container.appendChild(item));
