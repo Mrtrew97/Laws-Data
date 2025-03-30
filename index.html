@@ -51,7 +51,7 @@
         #data-container {
             margin-top: 20px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(4, 1fr); /* 4 equal-width columns */
             gap: 20px;
             justify-content: center;
             align-items: start;
@@ -120,7 +120,13 @@
                 "Merits Percentage", "AP Average", "AP Gain Average", "Merits Gained Percentage"
             ];
 
-            // Display only the fields that are in the `fieldsToShow` list
+            // Create a new list of data boxes to match the column layout
+            let column1 = [];
+            let column2 = [];
+            let column3 = [];
+            let column4 = [];
+
+            // Display only the fields that are in the `fieldsToShow` list and distribute them across columns
             Object.keys(person).forEach(key => {
                 if (fieldsToShow.includes(key)) {
                     let value = person[key];
@@ -138,9 +144,20 @@
                     let div = document.createElement("div");
                     div.classList.add("data-box");
                     div.innerHTML = `<h3>${key}</h3><p>${value || "0"}</p>`;
-                    container.appendChild(div);
+
+                    // Assign the boxes to columns
+                    if (column1.length < 2) column1.push(div);
+                    else if (column2.length < 5) column2.push(div);
+                    else if (column3.length < 5) column3.push(div);
+                    else if (column4.length < 2) column4.push(div);
                 }
             });
+
+            // Append boxes to their respective columns
+            column1.forEach(item => container.appendChild(item));
+            column2.forEach(item => container.appendChild(item));
+            column3.forEach(item => container.appendChild(item));
+            column4.forEach(item => container.appendChild(item));
         }
 
         function resetDataDisplay() {
