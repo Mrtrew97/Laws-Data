@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laws Data</title>
     <style>
+        :root {
+            --horizontal-gap: 20px; /* Adjust this value to change the horizontal gap */
+            --vertical-gap: 20px;   /* Adjust this value to change the vertical gap */
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -51,13 +56,16 @@
         #data-container {
             margin-top: 20px;
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* Four columns, equal width */
-            gap: 20px;
+            grid-template-rows: repeat(5, auto); /* 5 rows */
+            grid-column-gap: var(--horizontal-gap); /* Horizontal gap */
+            grid-row-gap: var(--vertical-gap); /* Vertical gap */
             width: 80%;
             max-width: 800px;
         }
 
         .data-box {
+            width: 150px;  /* Fixed width */
+            height: 50px;  /* Fixed height */
             padding: 10px;
             background-color: #b4b4b4;
             border: 4px double #000;
@@ -79,6 +87,11 @@
             font-size: 16px;
             font-weight: bold;
             color: #000;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
         }
     </style>
 </head>
@@ -118,13 +131,10 @@
                 "Merits Percentage", "AP Average", "AP Gain Average", "Merits Gained Percentage"
             ];
 
-            // Create a new list of data boxes to match the column layout
-            let column1 = [];
-            let column2 = [];
-            let column3 = [];
-            let column4 = [];
+            // Create an array for all data boxes
+            const boxes = [];
 
-            // Display only the fields that are in the `fieldsToShow` list and distribute them across columns
+            // Loop through the fields and create boxes for each field that is present in the data
             Object.keys(person).forEach(key => {
                 if (fieldsToShow.includes(key)) {
                     let value = person[key];
@@ -133,29 +143,34 @@
                     if (!isNaN(value)) {
                         value = Number(value).toFixed(2);
 
-                        // Check if both decimal places are 0, and if so, remove decimals
+                        // If both decimals are 0, remove decimals
                         if (parseFloat(value) === parseInt(value)) {
-                            value = parseInt(value).toString(); // Show as integer
+                            value = parseInt(value).toString();
                         }
                     }
 
                     let div = document.createElement("div");
                     div.classList.add("data-box");
                     div.innerHTML = `<h3>${key}</h3><p>${value || "0"}</p>`;
-
-                    // Assign the boxes to columns based on the number of boxes in each column
-                    if (column1.length < 2) column1.push(div);
-                    else if (column2.length < 5) column2.push(div);
-                    else if (column3.length < 5) column3.push(div);
-                    else if (column4.length < 2) column4.push(div);
+                    boxes.push(div);
                 }
             });
 
-            // Clear container and append boxes to their respective columns
-            column1.forEach(item => container.appendChild(item));
-            column2.forEach(item => container.appendChild(item));
-            column3.forEach(item => container.appendChild(item));
-            column4.forEach(item => container.appendChild(item));
+            // Create rows of boxes
+            const rows = [
+                boxes.slice(0, 4), // Row 1
+                boxes.slice(4, 8), // Row 2
+                boxes.slice(8, 12), // Row 3
+                boxes.slice(12, 16), // Row 4
+                boxes.slice(16, 20) // Row 5
+            ];
+
+            rows.forEach(rowBoxes => {
+                let rowDiv = document.createElement("div");
+                rowDiv.classList.add("row");
+                rowBoxes.forEach(box => rowDiv.appendChild(box));
+                container.appendChild(rowDiv);
+            });
         }
 
         function resetDataDisplay() {
